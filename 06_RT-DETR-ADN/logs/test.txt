@@ -55,13 +55,13 @@ DistributedDataParallel(
         (0): Bottleneck(
           (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn1): FrozenBatchNorm2d(128, eps=1e-05)
-          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
           (bn2): FrozenBatchNorm2d(128, eps=1e-05)
           (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn3): FrozenBatchNorm2d(512, eps=1e-05)
           (relu): ReLU(inplace=True)
           (downsample): Sequential(
-            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
             (1): FrozenBatchNorm2d(512, eps=1e-05)
           )
         )
@@ -97,13 +97,13 @@ DistributedDataParallel(
         (0): Bottleneck(
           (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn1): FrozenBatchNorm2d(256, eps=1e-05)
-          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
           (bn2): FrozenBatchNorm2d(256, eps=1e-05)
           (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
           (relu): ReLU(inplace=True)
           (downsample): Sequential(
-            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
             (1): FrozenBatchNorm2d(1024, eps=1e-05)
           )
         )
@@ -157,13 +157,13 @@ DistributedDataParallel(
         (0): Bottleneck(
           (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn1): FrozenBatchNorm2d(512, eps=1e-05)
-          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
           (bn2): FrozenBatchNorm2d(512, eps=1e-05)
           (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
           (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
           (relu): ReLU(inplace=True)
           (downsample): Sequential(
-            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
             (1): FrozenBatchNorm2d(2048, eps=1e-05)
           )
         )
@@ -418,163 +418,17 @@ start creating model... (in yaml_config.py)
 start creating model... (in yaml_config.py)
 Initial lr:  [1e-05, 0.0001, 0.0001, 0.0001]
 loading annotations into memory...
-Done (t=11.26s)
+Done (t=11.28s)
 creating index...
 index created!
 loading annotations into memory...
-Done (t=0.37s)
+Done (t=0.36s)
 creating index...
 index created!
 (in det_solver.py) model params, #params : 
 number of params: 42862860
 super_config : [False, False, False, False]
 base_config : [True, True, True, True]
-Traceback (most recent call last):
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 63, in <module>
-    main(args)
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 49, in main
-    solver.fit() # training
-    ^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 50, in fit
-    train_stats = train_one_epoch(
-                  ^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_engine.py", line 65, in train_one_epoch
-    outputs_super = model(samples, targets)
-                    ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
-    output = self._run_ddp_forward(*inputs, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
-    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/rtdetr.py", line 55, in forward
-    x = self.encoder(x)        
-        ^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 371, in forward
-    memory = self.encoder[i](src_flatten, pos_embed=pos_embed)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 214, in forward
-    output = layer(output, src_mask=src_mask, pos_embed=pos_embed)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 161, in forward
-    src, _ = self.self_attn(q, k, value=src, attn_mask=src_mask)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/activation.py", line 1205, in forward
-    attn_output, attn_output_weights = F.multi_head_attention_forward(
-                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/functional.py", line 5338, in multi_head_attention_forward
-    attn_output_weights = torch.bmm(q_scaled, k.transpose(-2, -1))
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 78.12 GiB (GPU 1; 23.64 GiB total capacity; 10.57 GiB already allocated; 9.70 GiB free; 13.33 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
-Traceback (most recent call last):
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 63, in <module>
-    main(args)
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 49, in main
-    solver.fit() # training
-    ^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 50, in fit
-    train_stats = train_one_epoch(
-                  ^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_engine.py", line 65, in train_one_epoch
-    outputs_super = model(samples, targets)
-                    ^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
-    output = self._run_ddp_forward(*inputs, **kwargs)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
-    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/rtdetr.py", line 55, in forward
-    x = self.encoder(x)        
-        ^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 371, in forward
-    memory = self.encoder[i](src_flatten, pos_embed=pos_embed)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 214, in forward
-    output = layer(output, src_mask=src_mask, pos_embed=pos_embed)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 161, in forward
-    src, _ = self.self_attn(q, k, value=src, attn_mask=src_mask)
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
-    return forward_call(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/activation.py", line 1205, in forward
-    attn_output, attn_output_weights = F.multi_head_attention_forward(
-                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/functional.py", line 5338, in multi_head_attention_forward
-    attn_output_weights = torch.bmm(q_scaled, k.transpose(-2, -1))
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 114.38 GiB (GPU 0; 23.64 GiB total capacity; 12.69 GiB already allocated; 6.85 GiB free; 16.24 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
-ERROR:torch.distributed.elastic.multiprocessing.api:failed (exitcode: 1) local_rank: 0 (pid: 838639) of binary: /home/hslee/anaconda3/bin/python
-Traceback (most recent call last):
-  File "/home/hslee/anaconda3/bin/torchrun", line 8, in <module>
-    sys.exit(main())
-             ^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 346, in wrapper
-    return f(*args, **kwargs)
-           ^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/distributed/run.py", line 794, in main
-    run(args)
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/distributed/run.py", line 785, in run
-    elastic_launch(
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 134, in __call__
-    return launch_agent(self._config, self._entrypoint, list(args))
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/distributed/launcher/api.py", line 250, in launch_agent
-    raise ChildFailedError(
-torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
-============================================================
-tools/train.py FAILED
-------------------------------------------------------------
-Failures:
-[1]:
-  time      : 2024-06-09_15:55:12
-  host      : ada
-  rank      : 1 (local_rank: 1)
-  exitcode  : 1 (pid: 838640)
-  error_file: <N/A>
-  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
-------------------------------------------------------------
-Root Cause (first observed failure):
-[0]:
-  time      : 2024-06-09_15:55:12
-  host      : ada
-  rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 838639)
-  error_file: <N/A>
-  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
-============================================================
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+Epoch: [0]  [    0/14786]  eta: 8:00:42  lr: 0.000010  loss: 48.0815 (48.0815)  loss_bbox: 2.0044 (2.0044)  loss_bbox_aux_0: 2.0139 (2.0139)  loss_bbox_aux_1: 2.0129 (2.0129)  loss_bbox_aux_2: 1.9974 (1.9974)  loss_bbox_aux_3: 2.0568 (2.0568)  loss_bbox_aux_4: 2.0079 (2.0079)  loss_bbox_aux_5: 2.0036 (2.0036)  loss_bbox_dn_0: 1.0904 (1.0904)  loss_bbox_dn_1: 1.0904 (1.0904)  loss_bbox_dn_2: 1.0904 (1.0904)  loss_bbox_dn_3: 1.0904 (1.0904)  loss_bbox_dn_4: 1.0904 (1.0904)  loss_bbox_dn_5: 1.0904 (1.0904)  loss_giou: 1.6568 (1.6568)  loss_giou_aux_0: 1.6781 (1.6781)  loss_giou_aux_1: 1.6473 (1.6473)  loss_giou_aux_2: 1.6635 (1.6635)  loss_giou_aux_3: 1.6909 (1.6909)  loss_giou_aux_4: 1.6530 (1.6530)  loss_giou_aux_5: 1.6793 (1.6793)  loss_giou_dn_0: 1.2738 (1.2738)  loss_giou_dn_1: 1.2738 (1.2738)  loss_giou_dn_2: 1.2738 (1.2738)  loss_giou_dn_3: 1.2738 (1.2738)  loss_giou_dn_4: 1.2738 (1.2738)  loss_giou_dn_5: 1.2738 (1.2738)  loss_vfl: 0.3624 (0.3624)  loss_vfl_aux_0: 0.3021 (0.3021)  loss_vfl_aux_1: 0.3516 (0.3516)  loss_vfl_aux_2: 0.3726 (0.3726)  loss_vfl_aux_3: 0.3546 (0.3546)  loss_vfl_aux_4: 0.3423 (0.3423)  loss_vfl_aux_5: 0.3212 (0.3212)  loss_vfl_dn_0: 0.9380 (0.9380)  loss_vfl_dn_1: 1.0077 (1.0077)  loss_vfl_dn_2: 0.9282 (0.9282)  loss_vfl_dn_3: 0.9899 (0.9899)  loss_vfl_dn_4: 0.9155 (0.9155)  loss_vfl_dn_5: 0.9444 (0.9444)  time: 1.9507  data: 0.7137  max mem: 4753

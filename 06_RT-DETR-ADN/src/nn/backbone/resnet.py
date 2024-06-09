@@ -204,6 +204,9 @@ class ResNet(nn.Module):
             
             print(f"make layer i: {i}, num_blocks: {num_blocks}")
             
+            if i != 0:
+                dilate = replace_stride_with_dilation[i - 1]
+                stride = 2
             if dilate:
                 self.dilation *= stride
                 stride = 1
@@ -280,6 +283,7 @@ class ResNet(nn.Module):
         x = self.maxpool(x)
 
         x = self.layer1(x)
+        
         x = self.layer2(x)
         outs.append(x)
         
@@ -289,6 +293,8 @@ class ResNet(nn.Module):
         x = self.layer4(x)
         outs.append(x)
 
+        # for i in range(len(outs)):
+        #     print(f"\tout[{i}] : {outs[i].shape}")
 
         return outs
 
