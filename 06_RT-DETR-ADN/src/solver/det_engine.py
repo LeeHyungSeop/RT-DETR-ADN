@@ -73,6 +73,13 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
             loss_super.backward()
             # loss_base.backward()
             
+            # print gradient shape
+            # for name, param in model.named_parameters():
+            #     if param.grad is not None:
+            #         print(f"name : {name}, param.grad.shape : {param.grad.shape}")
+            #     else :
+            #         print(f"name : {name}, param.grad : {param.grad}")
+            
             if max_norm > 0:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
 
