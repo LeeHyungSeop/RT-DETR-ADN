@@ -247,7 +247,7 @@ class ResNet(nn.Module):
             del state["fc.weight"]
             del state["fc.bias"]
             
-            self.load_state_dict(state)
+            self.load_state_dict(state, strict=True)
             print(f"Load state_dict from {url}")
     
         if freeze_at >= 0:
