@@ -8,7 +8,7 @@ postprocessor: RTDETRPostProcessor
 RTDETR: 
   # 2024.06.02 @hslee
   # backbone: PResNet
-  backbone : ResNetADN
+  # backbone : ResNetADN
   backbone : ResNet
   encoder: HybridEncoder
   decoder: RTDETRTransformer
@@ -25,6 +25,15 @@ PResNet:
 
 # 2024.06.02 @hslee
 ResNetADN:
+  depth: 50
+  freeze_at: 0
+  return_idx: [1, 2, 3]
+  num_stages: 4
+  freeze_norm: True
+  pretrained: True
+
+# 2024.06.02 @hslee
+ResNet:
   depth: 50
   freeze_at: 0
   return_idx: [1, 2, 3]

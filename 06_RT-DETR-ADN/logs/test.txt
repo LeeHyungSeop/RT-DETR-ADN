@@ -5,63 +5,541 @@ Setting OMP_NUM_THREADS environment variable for each process to be 1 in default
 Initialized distributed mode...
 Start training
 start creating model... (in yaml_config.py)
+make layer i: 0, num_blocks: 3
+make layer i: 1, num_blocks: 4
+make layer i: 2, num_blocks: 6
+make layer i: 3, num_blocks: 3
+Load state_dict from https://download.pytorch.org/models/resnet50-0676ba61.pth
+self.model (in solver.py): 
+DistributedDataParallel(
+  (module): RTDETR(
+    (backbone): ResNet(
+      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+      (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+      (relu): ReLU(inplace=True)
+      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (layer1): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(256, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer2): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(512, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer3): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(1024, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (4): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (5): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer4): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(2048, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+    )
+    (decoder): RTDETRTransformer(
+      (input_proj): ModuleList(
+        (0-2): 3 x Sequential(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0-5): 6 x TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout1): Dropout(p=0.0, inplace=False)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (cross_attn): MSDeformableAttention(
+              (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+              (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+              (value_proj): Linear(in_features=256, out_features=256, bias=True)
+              (output_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout2): Dropout(p=0.0, inplace=False)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=1024, bias=True)
+            (dropout3): Dropout(p=0.0, inplace=False)
+            (linear2): Linear(in_features=1024, out_features=256, bias=True)
+            (dropout4): Dropout(p=0.0, inplace=False)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (denoising_class_embed): Embedding(81, 256, padding_idx=80)
+      (query_pos_head): MLP(
+        (layers): ModuleList(
+          (0): Linear(in_features=4, out_features=512, bias=True)
+          (1): Linear(in_features=512, out_features=256, bias=True)
+        )
+        (act): ReLU(inplace=True)
+      )
+      (enc_output): Sequential(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+      (enc_score_head): Linear(in_features=256, out_features=80, bias=True)
+      (enc_bbox_head): MLP(
+        (layers): ModuleList(
+          (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+          (2): Linear(in_features=256, out_features=4, bias=True)
+        )
+        (act): ReLU(inplace=True)
+      )
+      (dec_score_head): ModuleList(
+        (0-5): 6 x Linear(in_features=256, out_features=80, bias=True)
+      )
+      (dec_bbox_head): ModuleList(
+        (0-5): 6 x MLP(
+          (layers): ModuleList(
+            (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=4, bias=True)
+          )
+          (act): ReLU(inplace=True)
+        )
+      )
+    )
+    (encoder): HybridEncoder(
+      (input_proj): ModuleList(
+        (0): Sequential(
+          (0): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): Sequential(
+          (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): Sequential(
+          (0): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (encoder): ModuleList(
+        (0): TransformerEncoder(
+          (layers): ModuleList(
+            (0): TransformerEncoderLayer(
+              (self_attn): MultiheadAttention(
+                (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+              )
+              (linear1): Linear(in_features=256, out_features=1024, bias=True)
+              (dropout): Dropout(p=0.0, inplace=False)
+              (linear2): Linear(in_features=1024, out_features=256, bias=True)
+              (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (dropout1): Dropout(p=0.0, inplace=False)
+              (dropout2): Dropout(p=0.0, inplace=False)
+              (activation): GELU(approximate='none')
+            )
+          )
+        )
+      )
+      (lateral_convs): ModuleList(
+        (0-1): 2 x ConvNormLayer(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+      )
+      (fpn_blocks): ModuleList(
+        (0-1): 2 x CSPRepLayer(
+          (conv1): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (conv2): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (bottlenecks): Sequential(
+            (0): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (1): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (2): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+          )
+          (conv3): Identity()
+        )
+      )
+      (downsample_convs): ModuleList(
+        (0-1): 2 x ConvNormLayer(
+          (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+      )
+      (pan_blocks): ModuleList(
+        (0-1): 2 x CSPRepLayer(
+          (conv1): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (conv2): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (bottlenecks): Sequential(
+            (0): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (1): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (2): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+          )
+          (conv3): Identity()
+        )
+      )
+    )
+  )
+)
+start creating model... (in yaml_config.py)
+start creating model... (in yaml_config.py)
+Initial lr:  [1e-05, 0.0001, 0.0001, 0.0001]
+loading annotations into memory...
+Done (t=11.26s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.37s)
+creating index...
+index created!
+(in det_solver.py) model params, #params : 
+number of params: 42862860
+super_config : [False, False, False, False]
+base_config : [True, True, True, True]
 Traceback (most recent call last):
   File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 63, in <module>
     main(args)
   File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 49, in main
     solver.fit() # training
     ^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 23, in fit
-    self.train()
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/solver.py", line 80, in train
-    self.setup()
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/solver.py", line 33, in setup
-    model = cfg.model.to(device) # cfg.model = (YAMLConfig Class).(method) in yaml_config.py
-            ^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_config.py", line 56, in model
-    self._model = create(self.yaml_cfg['model'])
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_utils.py", line 129, in create
-    cls_kwargs[k] = create(_cfg['_name'])
-                    ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_utils.py", line 154, in create
-    return cls(**cls_kwargs)
-           ^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/nn/backbone/resnet.py", line 190, in __init__
-    self.layer1 = self._make_layer(block, 64, layers[0])
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/nn/backbone/resnet.py", line 236, in _make_layer
-    block(
-TypeError: 'NoneType' object is not callable
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 50, in fit
+    train_stats = train_one_epoch(
+                  ^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_engine.py", line 65, in train_one_epoch
+    outputs_super = model(samples, targets)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
+    output = self._run_ddp_forward(*inputs, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
+    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/rtdetr.py", line 55, in forward
+    x = self.encoder(x)        
+        ^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 371, in forward
+    memory = self.encoder[i](src_flatten, pos_embed=pos_embed)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 214, in forward
+    output = layer(output, src_mask=src_mask, pos_embed=pos_embed)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 161, in forward
+    src, _ = self.self_attn(q, k, value=src, attn_mask=src_mask)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/activation.py", line 1205, in forward
+    attn_output, attn_output_weights = F.multi_head_attention_forward(
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/functional.py", line 5338, in multi_head_attention_forward
+    attn_output_weights = torch.bmm(q_scaled, k.transpose(-2, -1))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 78.12 GiB (GPU 1; 23.64 GiB total capacity; 10.57 GiB already allocated; 9.70 GiB free; 13.33 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
 Traceback (most recent call last):
   File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 63, in <module>
     main(args)
   File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/train.py", line 49, in main
     solver.fit() # training
     ^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 23, in fit
-    self.train()
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/solver.py", line 80, in train
-    self.setup()
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/solver.py", line 33, in setup
-    model = cfg.model.to(device) # cfg.model = (YAMLConfig Class).(method) in yaml_config.py
-            ^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_config.py", line 56, in model
-    self._model = create(self.yaml_cfg['model'])
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_utils.py", line 129, in create
-    cls_kwargs[k] = create(_cfg['_name'])
-                    ^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/core/yaml_utils.py", line 154, in create
-    return cls(**cls_kwargs)
-           ^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/nn/backbone/resnet.py", line 190, in __init__
-    self.layer1 = self._make_layer(block, 64, layers[0])
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/nn/backbone/resnet.py", line 236, in _make_layer
-    block(
-TypeError: 'NoneType' object is not callable
-ERROR:torch.distributed.elastic.multiprocessing.api:failed (exitcode: 1) local_rank: 0 (pid: 829359) of binary: /home/hslee/anaconda3/bin/python
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_solver.py", line 50, in fit
+    train_stats = train_one_epoch(
+                  ^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/solver/det_engine.py", line 65, in train_one_epoch
+    outputs_super = model(samples, targets)
+                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1156, in forward
+    output = self._run_ddp_forward(*inputs, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/parallel/distributed.py", line 1110, in _run_ddp_forward
+    return module_to_run(*inputs[0], **kwargs[0])  # type: ignore[index]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/rtdetr.py", line 55, in forward
+    x = self.encoder(x)        
+        ^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 371, in forward
+    memory = self.encoder[i](src_flatten, pos_embed=pos_embed)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 214, in forward
+    output = layer(output, src_mask=src_mask, pos_embed=pos_embed)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/tools/../src/zoo/rtdetr/hybrid_encoder.py", line 161, in forward
+    src, _ = self.self_attn(q, k, value=src, attn_mask=src_mask)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1501, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/modules/activation.py", line 1205, in forward
+    attn_output, attn_output_weights = F.multi_head_attention_forward(
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hslee/anaconda3/lib/python3.11/site-packages/torch/nn/functional.py", line 5338, in multi_head_attention_forward
+    attn_output_weights = torch.bmm(q_scaled, k.transpose(-2, -1))
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.cuda.OutOfMemoryError: CUDA out of memory. Tried to allocate 114.38 GiB (GPU 0; 23.64 GiB total capacity; 12.69 GiB already allocated; 6.85 GiB free; 16.24 GiB reserved in total by PyTorch) If reserved memory is >> allocated memory try setting max_split_size_mb to avoid fragmentation.  See documentation for Memory Management and PYTORCH_CUDA_ALLOC_CONF
+ERROR:torch.distributed.elastic.multiprocessing.api:failed (exitcode: 1) local_rank: 0 (pid: 838639) of binary: /home/hslee/anaconda3/bin/python
 Traceback (most recent call last):
   File "/home/hslee/anaconda3/bin/torchrun", line 8, in <module>
     sys.exit(main())
@@ -84,19 +562,19 @@ tools/train.py FAILED
 ------------------------------------------------------------
 Failures:
 [1]:
-  time      : 2024-06-09_14:53:43
+  time      : 2024-06-09_15:55:12
   host      : ada
   rank      : 1 (local_rank: 1)
-  exitcode  : 1 (pid: 829360)
+  exitcode  : 1 (pid: 838640)
   error_file: <N/A>
   traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
 ------------------------------------------------------------
 Root Cause (first observed failure):
 [0]:
-  time      : 2024-06-09_14:53:43
+  time      : 2024-06-09_15:55:12
   host      : ada
   rank      : 0 (local_rank: 0)
-  exitcode  : 1 (pid: 829359)
+  exitcode  : 1 (pid: 838639)
   error_file: <N/A>
   traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
 ============================================================

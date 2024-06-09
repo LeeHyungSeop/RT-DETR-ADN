@@ -8,6 +8,8 @@ from torchvision.ops import misc as misc_nn_ops
 
 from ._api import  WeightsEnum
 from ._utils import _ovewrite_named_param
+from .common import get_activation, ConvNormLayer, FrozenBatchNorm2d
+
 from src.core import register
 
 
@@ -68,7 +70,7 @@ class BasicBlock(nn.Module):
         super().__init__()
         if norm_layer is None:
             # 2024.06.04 @hslee : set norm_layer to FrozenBatchNorm2d
-            norm_layer = misc_nn_ops.FrozenBatchNorm2d
+            norm_layer = nn.BatchNorm2d
         if groups != 1 or base_width != 64:
             raise ValueError("BasicBlock only supports groups=1 and base_width=64")
         if dilation > 1:
@@ -128,7 +130,7 @@ class Bottleneck(nn.Module):
 
         if norm_layer is None:
             # 2024.06.04 @hslee : set norm_layer to FrozenBatchNorm2d
-            norm_layer = misc_nn_ops.FrozenBatchNorm2d
+            norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.0)) * groups
         # Both self.conv2 and self.downsample layers downsample the input when stride != 1
         self.conv1 = conv1x1(inplanes, width)
@@ -215,10 +217,12 @@ class ResNetADN(nn.Module):
         self,
         depth,
         block: Type[Union[Bottleneck,]],
-        num_classes: int = 1000,
-        zero_init_residual: bool = False,
         groups: int = 1,
         width_per_group: int = 64,
+        # 2024.06.08 @hslee : add parameters
+        num_stages=4, 
+        freeze_at=-1, 
+        freeze_norm=True, 
         replace_stride_with_dilation: Optional[List[bool]] = None,
         norm_layer: Optional[Callable[..., nn.Module]] = None,
         pretrained=False) : 
@@ -229,8 +233,7 @@ class ResNetADN(nn.Module):
         self.num_skippable_stages = len(block_nums)
 
         if norm_layer is None:
-            # 2024.06.04 @hslee : set norm_layer to FrozenBatchNorm2d
-            norm_layer = misc_nn_ops.FrozenBatchNorm2d
+            norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
 
         self.inplanes = 64
@@ -314,7 +317,7 @@ class ResNetADN(nn.Module):
         
         # 1 : my ResNet50ADN
         if pretrained :
-            path = "/home/hslee/Desktop/INU_RISE/02_AdaptiveDepthNetwork/pretrained/resnet50_adn_model_145.pth"
+            path = "/home/hslee/Desktop/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/resnet50_adn_model_145.pth"
             state = torch.load(path)['model']
             
             # 2024.06.04 @hslee
@@ -334,7 +337,6 @@ class ResNetADN(nn.Module):
             # # print all parameter
             # for name, param in self.named_parameters():
             #     print(f"name : {name}, param : {param}")
-                    
             
         # # 2 : original ResNet50 (provided by paper's author)
         # if pretrained:
@@ -350,7 +352,28 @@ class ResNetADN(nn.Module):
         #     # print all parameter
         #     for name, param in self.named_parameters():
         #         print(f"name : {name}, param : {param}")
-            
+        
+        if freeze_at >= 0:
+            self._freeze_parameters(self.conv1)
+            for i in range(min(freeze_at, num_stages)):
+                self._freeze_parameters(self.res_layers[i])
+
+        if freeze_norm:
+            self._freeze_norm(self)
+                
+    def _freeze_parameters(self, m: nn.Module):
+        for p in m.parameters():
+            p.requires_grad = False
+
+    def _freeze_norm(self, m: nn.Module):
+        if isinstance(m, nn.BatchNorm2d):
+            m = FrozenBatchNorm2d(m.num_features)
+        else:
+            for name, child in m.named_children():
+                _child = self._freeze_norm(child)
+                if _child is not child:
+                    setattr(m, name, _child)
+        return m
             
     
     

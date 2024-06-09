@@ -9,6 +9,7 @@ from ..transforms._presets import ImageClassification
 from ._api import register_model, Weights, WeightsEnum
 from ._meta import _IMAGENET_CATEGORIES
 from ._utils import _ovewrite_named_param, handle_legacy_interface
+from .common import get_activation, ConvNormLayer, FrozenBatchNorm2d
 
 from src.core import register
 
@@ -151,16 +152,20 @@ class Bottleneck(nn.Module):
 class ResNet(nn.Module):
     def __init__(
         self,
+        depth,
         block: Type[Union[BasicBlock, Bottleneck]],
         layers: List[int],
-        num_classes: int = 1000,
-        zero_init_residual: bool = False,
         groups: int = 1,
         width_per_group: int = 64,
+        # 2024.06.08 @hslee : add parameters
+        num_stages=4, 
+        freeze_at=-1, 
+        freeze_norm=True, 
         replace_stride_with_dilation: Optional[List[bool]] = None,
         norm_layer: Optional[Callable[..., nn.Module]] = None,
-    ) -> None:
+        pretrained: bool = False): 
         super().__init__()
+        
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
@@ -183,77 +188,92 @@ class ResNet(nn.Module):
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
         
-        # 2024.06.08 @hslee
+        self.depth = depth
+        
+        # 2024.06.08 @hslee : make layers
         layers = [3, 4, 6, 3]
-        
-        
-        self.layer1 = self._make_layer(block, 64, layers[0])
-        self.layer2 = self._make_layer(block, 128, layers[1], stride=2, dilate=replace_stride_with_dilation[0])
-        self.layer3 = self._make_layer(block, 256, layers[2], stride=2, dilate=replace_stride_with_dilation[1])
-        self.layer4 = self._make_layer(block, 512, layers[3], stride=2, dilate=replace_stride_with_dilation[2])
-        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        self.fc = nn.Linear(512 * 4, num_classes)
-
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                nn.init.kaiming_normal_(m.weight, mode="fan_out", nonlinearity="relu")
-            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
-                nn.init.constant_(m.weight, 1)
-                nn.init.constant_(m.bias, 0)
-
-        # Zero-initialize the last BN in each residual branch,
-        # so that the residual branch starts with zeros, and each residual block behaves like an identity.
-        # This improves the model by 0.2~0.3% according to https://arxiv.org/abs/1706.02677
-        if zero_init_residual:
-            for m in self.modules():
-                if isinstance(m, Bottleneck) and m.bn3.weight is not None:
-                    nn.init.constant_(m.bn3.weight, 0)  # type: ignore[arg-type]
-                elif isinstance(m, BasicBlock) and m.bn2.weight is not None:
-                    nn.init.constant_(m.bn2.weight, 0)  # type: ignore[arg-type]
-
-    def _make_layer(
-        self,
-        block: Type[Union[BasicBlock, Bottleneck]],
-        planes: int,
-        blocks: int,
-        stride: int = 1,
-        dilate: bool = False,
-    ) -> nn.Sequential:
-        norm_layer = self._norm_layer
-        downsample = None
-        previous_dilation = self.dilation
-        if dilate:
-            self.dilation *= stride
+        for i, num_blocks in enumerate(layers):
+            norm_layer = self._norm_layer
+            downsample = None
+            previous_dilation = self.dilation
+            planes = 64 * 2**i
+            dilate = False
             stride = 1
-        if stride != 1 or self.inplanes != planes * 4:
-            downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * 4, stride),
-                norm_layer(planes * 4),
-            )
+            blocks = num_blocks
+            previous_dilation = self.dilation
+            
+            print(f"make layer i: {i}, num_blocks: {num_blocks}")
+            
+            if dilate:
+                self.dilation *= stride
+                stride = 1
+            if stride != 1 or self.inplanes != planes * 4:
+                downsample = nn.Sequential(
+                    conv1x1(self.inplanes, planes * 4, stride),
+                    norm_layer(planes * 4),
+                )
+                
+            block = Bottleneck if self.depth >= 50 else BasicBlock                
 
-        layers = []
-        layers.append(
-            block(
-                self.inplanes, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer
-            )
-        )
-        self.inplanes = planes * 4
-        for _ in range(1, blocks):
+            layers = []
             layers.append(
                 block(
-                    self.inplanes,
-                    planes,
-                    groups=self.groups,
-                    base_width=self.base_width,
-                    dilation=self.dilation,
-                    norm_layer=norm_layer,
+                    self.inplanes, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer
                 )
             )
+            self.inplanes = planes * 4
+            for _ in range(1, blocks):
+                layers.append(
+                    block(
+                        self.inplanes,
+                        planes,
+                        groups=self.groups,
+                        base_width=self.base_width,
+                        dilation=self.dilation,
+                        norm_layer=norm_layer,
+                    )
+                )
+            setattr(self, f"layer{i+1}", nn.Sequential(*layers))
 
-        return nn.Sequential(*layers)
+        if pretrained:
+            # load pytorch resnet50v1 pretrained model
+            
+            url="https://download.pytorch.org/models/resnet50-0676ba61.pth"
+            state = torch.hub.load_state_dict_from_url(url)
+            
+            del state["fc.weight"]
+            del state["fc.bias"]
+            
+            self.load_state_dict(state)
+            print(f"Load state_dict from {url}")
+    
+        if freeze_at >= 0:
+            self._freeze_parameters(self.conv1)
+            for i in range(min(freeze_at, num_stages)):
+                self._freeze_parameters(self.res_layers[i])
 
-    def _forward_impl(self, x: Tensor) -> Tensor:
+        if freeze_norm:
+            self._freeze_norm(self)
+        
+    def _freeze_parameters(self, m: nn.Module):
+        for p in m.parameters():
+            p.requires_grad = False
+
+    def _freeze_norm(self, m: nn.Module):
+        if isinstance(m, nn.BatchNorm2d):
+            m = FrozenBatchNorm2d(m.num_features)
+        else:
+            for name, child in m.named_children():
+                _child = self._freeze_norm(child)
+                if _child is not child:
+                    setattr(m, name, _child)
+        return m
+
+    def _forward_impl(self, x: Tensor, skip: List[bool] = None) -> Tensor:
         # See note [TorchScript super()]
+        
+        outs = []
+        
         x = self.conv1(x)
         x = self.bn1(x)
         x = self.relu(x)
@@ -261,16 +281,18 @@ class ResNet(nn.Module):
 
         x = self.layer1(x)
         x = self.layer2(x)
+        outs.append(x)
+        
         x = self.layer3(x)
+        outs.append(x)
+        
         x = self.layer4(x)
+        outs.append(x)
 
-        x = self.avgpool(x)
-        x = torch.flatten(x, 1)
-        x = self.fc(x)
 
-        return x
+        return outs
 
-    def forward(self, x: Tensor) -> Tensor:
+    def forward(self, x: Tensor, skip: List[bool] = None) -> Tensor:
         return self._forward_impl(x)
 
 
@@ -287,6 +309,7 @@ def _resnet(
     model = ResNet(block, layers, **kwargs)
 
     if weights is not None:
+        print(f"here, model.load_state_dict(weights.get_state_dict(progress=progress, check_hash=True))")
         model.load_state_dict(weights.get_state_dict(progress=progress, check_hash=True))
 
     return model
@@ -412,6 +435,7 @@ def resnet50(*, weights: Optional[ResNet50_Weights] = None, progress: bool = Tru
         :members:
     """
     weights = ResNet50_Weights.verify(weights)
+    print(f"here resnet50")
 
     return _resnet(Bottleneck, [3, 4, 6, 3], weights, progress, **kwargs)
 
