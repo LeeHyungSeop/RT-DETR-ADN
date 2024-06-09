@@ -5,13 +5,18 @@ import torch
 import torch.nn as nn
 from torch import Tensor
 
-from ._api import  WeightsEnum
-from ._utils import _ovewrite_named_param
+from ..transforms._presets import ImageClassification
+from ._api import register_model, Weights, WeightsEnum
+from ._meta import _IMAGENET_CATEGORIES
+from ._utils import _ovewrite_named_param, handle_legacy_interface
+
 from src.core import register
 
 
 __all__ = [
-    "ResNetADN",
+    "ResNet",
+    "ResNet50_Weights",
+    "ResNet101_Weights",
     "resnet50",
     "resnet101",
 ]
@@ -34,6 +39,7 @@ def conv3x3(in_planes: int, out_planes: int, stride: int = 1, groups: int = 1, d
 def conv1x1(in_planes: int, out_planes: int, stride: int = 1) -> nn.Conv2d:
     """1x1 convolution"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+
 
 class BasicBlock(nn.Module):
     expansion: int = 1
@@ -103,12 +109,8 @@ class Bottleneck(nn.Module):
         base_width: int = 64,
         dilation: int = 1,
         norm_layer: Optional[Callable[..., nn.Module]] = None,
-        skippable: bool = False, # is this block skippable? @woochul
     ) -> None:
         super().__init__()
-
-        self.skippable = skippable
-
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.0)) * groups
@@ -123,44 +125,19 @@ class Bottleneck(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
-        if self.skippable == False:   # Switch BN for shared layers.  @woochul
-            self.bn1_skip = norm_layer(width)
-            self.bn2_skip = norm_layer(width)
-            self.bn3_skip = norm_layer(planes * self.expansion)
-            
-            
-        # 2024.04.08 @hslee
-        # for test purpose, 
-        # "To test whether BN and BN_Skip are appropriately utilized."
-        # self.bn1_cnt = 0
-        # self.bn1_skip_cnt = 0
-
-    def forward(self, x: Tensor, skip: bool = False) -> Tensor:
+    def forward(self, x: Tensor) -> Tensor:
         identity = x
 
         out = self.conv1(x)
-        if self.skippable == False and skip == True:  # Switchable BN. @woochul
-            # print(f"bn1_skip is used")
-            out = self.bn1_skip(out)
-        else:
-            # print(f"bn1 is used")
-            out = self.bn1(out)
+        out = self.bn1(out)
         out = self.relu(out)
 
         out = self.conv2(out)
-        if self.skippable == False and skip == True:  # Switchable BN. @woochul
-            out = self.bn2_skip(out)
-        else:
-            out = self.bn2(out)
+        out = self.bn2(out)
         out = self.relu(out)
 
         out = self.conv3(out)
-        if self.skippable == False and skip == True: # Switchable BN. @woochul
-            # print(f"bn3_skip is used")
-            out = self.bn3_skip(out)
-        else:
-            # print(f"bn3 is used")
-            out = self.bn3(out)
+        out = self.bn3(out)
 
         if self.downsample is not None:
             identity = self.downsample(x)
@@ -170,31 +147,12 @@ class Bottleneck(nn.Module):
 
         return out
 
-
-class SkippableSequentialBlocks(nn.Sequential):
-    """Skips some blocks in the stage"""
-    def forward(self, input, skip = False):
-        """Extends nn.Sequential's forward for skipping some blocks
-        Args:
-            x (Tensor): input tensor
-            skip (bool): if True, skip the last half blocks in the stage.
-        """
-        for i in range(len(self)):
-            if self[i].skippable == True and skip == True:
-                # print(f"--skip {type(self[i])}")
-                pass
-            else:
-                # print(f"--execute {type(self[i])}")
-                input = self[i](input, skip)
-        # print("")
-        return input
-
 @register
-class ResNetADN(nn.Module):
+class ResNet(nn.Module):
     def __init__(
         self,
-        block: Type[Union[Bottleneck,]],
-        layers = [3, 4, 6, 3],
+        block: Type[Union[BasicBlock, Bottleneck]],
+        layers: List[int],
         num_classes: int = 1000,
         zero_init_residual: bool = False,
         groups: int = 1,
@@ -203,18 +161,12 @@ class ResNetADN(nn.Module):
         norm_layer: Optional[Callable[..., nn.Module]] = None,
     ) -> None:
         super().__init__()
-
-        # @woochul
-        self.num_skippable_stages = len(layers)
-
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         self._norm_layer = norm_layer
 
         self.inplanes = 64
         self.dilation = 1
-        self.block_expansion = 4
-        
         if replace_stride_with_dilation is None:
             # each element in the tuple indicates if we should replace
             # the 2x2 stride with a dilated convolution instead
@@ -230,12 +182,17 @@ class ResNetADN(nn.Module):
         self.bn1 = norm_layer(self.inplanes)
         self.relu = nn.ReLU(inplace=True)
         self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+        
+        # 2024.06.08 @hslee
+        layers = [3, 4, 6, 3]
+        
+        
         self.layer1 = self._make_layer(block, 64, layers[0])
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2, dilate=replace_stride_with_dilation[0])
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2, dilate=replace_stride_with_dilation[1])
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2, dilate=replace_stride_with_dilation[2])
-        # self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
-        # self.fc = nn.Linear(512 * self.block_expansion, num_classes)
+        self.avgpool = nn.AdaptiveAvgPool2d((1, 1))
+        self.fc = nn.Linear(512 * 4, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -256,7 +213,7 @@ class ResNetADN(nn.Module):
 
     def _make_layer(
         self,
-        block: Type[Union[Bottleneck,]],
+        block: Type[Union[BasicBlock, Bottleneck]],
         planes: int,
         blocks: int,
         stride: int = 1,
@@ -268,30 +225,20 @@ class ResNetADN(nn.Module):
         if dilate:
             self.dilation *= stride
             stride = 1
-        if stride != 1 or self.inplanes != planes * self.block_expansion:
+        if stride != 1 or self.inplanes != planes * 4:
             downsample = nn.Sequential(
-                conv1x1(self.inplanes, planes * self.block_expansion, stride),
-                norm_layer(planes * self.block_expansion),
+                conv1x1(self.inplanes, planes * 4, stride),
+                norm_layer(planes * 4),
             )
 
         layers = []
-
-        # First half blocks are shared and not skippable. @woochul
-        # 1. default: n_shared == n_skippable
-        n_shared = (blocks + 1) // 2  
-        # 2. experimental 2024.1.24: n_shared < n_skippable
-        # n_shared = (blocks + 1) // 2 - 1  
-        # 3. experimental 2024.1.26: n_shared > n_skippable
-        # n_shared = (blocks + 1) // 2  + 1
-        # n_shared = min(blocks - 1, n_shared) # maximum is blocks - 1
-
         layers.append(
             block(
-                self.inplanes, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer, skippable=False
+                self.inplanes, planes, stride, downsample, self.groups, self.base_width, previous_dilation, norm_layer
             )
         )
-        self.inplanes = planes * self.block_expansion
-        for i_block in range(1, blocks):
+        self.inplanes = planes * 4
+        for _ in range(1, blocks):
             layers.append(
                 block(
                     self.inplanes,
@@ -300,104 +247,202 @@ class ResNetADN(nn.Module):
                     base_width=self.base_width,
                     dilation=self.dilation,
                     norm_layer=norm_layer,
-                    skippable = (i_block >= n_shared), #last half blocks are skippable
                 )
             )
 
-        return SkippableSequentialBlocks(*layers)
+        return nn.Sequential(*layers)
 
-    def _forward_impl(self, x: Tensor, skip: List[bool] = None) -> Tensor:
+    def _forward_impl(self, x: Tensor) -> Tensor:
         # See note [TorchScript super()]
-
-        assert self.num_skippable_stages == len(skip), \
-            f"The networks has {self.num_stages} skippable stages, got: {len(skip)}"
-
-        # 2024.03.22 @hslee
-        print("here is resnet.py > _forward_impl")
-        print(f"skip: {skip}")
-        print(f"x.shape: {x.shape}")
-        
         x = self.conv1(x)
-        print(f"x.shape: {x.shape}")
-        
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
-        print(f"x.shape: {x.shape}")
-        
-        x = self.layer1(x, skip[0])
-        print(f"x.shape: {x.shape}")
-        
-        x = self.layer2(x, skip[1])
-        print(f"x.shape: {x.shape}")
-        
-        x = self.layer3(x, skip[2])
-        print(f"x.shape: {x.shape}")
-        
-        x = self.layer4(x, skip[3])
-        print(f"x.shape: {x.shape}")
 
-        # x = self.avgpool(x)
-        # print(f"x.shape: {x.shape}")
-        
-        # x = torch.flatten(x, 1)
-        # print(f"x.shape: {x.shape}")
-        # x = self.fc(x)
-        # print(f"x.shape: {x.shape}")
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+
+        x = self.avgpool(x)
+        x = torch.flatten(x, 1)
+        x = self.fc(x)
 
         return x
 
-    def forward(self, x: Tensor, skip: List[bool] = None) -> Tensor:
-        # skip = [False, False, False, False]
-        # skip = [True, False, False, False]
-        # skip = [False, True, False, False]
-        # skip = [False, False, True, False]
-        # skip = [False, False, False, True]
-        # skip = [True, True, False, False]
-        # skip = [True, False, True, False]
-        # skip = [True, False, False, True]
-        # skip = [False, True, True, False]
-        # skip = [False, True, False, True]
-        # skip = [False, False, True, True] 
-        # skip = [True, True, True, False]
-        # skip = [True, True, False, True]
-        # skip = [True, False, True, True]
-        # skip = [False, True, True, True]
-        # skip = [True, True, True, True] 
-        if skip is None:
-            skip = [False for _ in range(self.num_skippable_stages)]
-        return self._forward_impl(x, skip = skip)
+    def forward(self, x: Tensor) -> Tensor:
+        return self._forward_impl(x)
 
 
 def _resnet(
-    block: Type[Union[Bottleneck,]],
+    block: Type[Union[BasicBlock, Bottleneck]],
     layers: List[int],
     weights: Optional[WeightsEnum],
     progress: bool,
     **kwargs: Any,
-) -> ResNetADN:
+) -> ResNet:
     if weights is not None:
-        # _ovewrite_named_param(kwargs, "num_classes", len(weights.meta["categories"]))
-        _ovewrite_named_param(kwargs, "num_classes", 1000)
+        _ovewrite_named_param(kwargs, "num_classes", len(weights.meta["categories"]))
 
-    model = ResNetADN(block, layers, **kwargs)
+    model = ResNet(block, layers, **kwargs)
 
     if weights is not None:
-        # 2024.03.22 @hslee
-        # remove key(s) in state_dict: "fc.weight", "fc.bias". in weights['model']
-        # because full resnet50 architecture including fc.weight and fc.bias is not used in RetinaNet backbone.
-        state_dict = weights['model']
-        del state_dict["fc.weight"]
-        del state_dict["fc.bias"]
-        model.load_state_dict(weights['model'])
+        model.load_state_dict(weights.get_state_dict(progress=progress, check_hash=True))
+
     return model
 
-def resnet50(*, weights = None, progress: bool = True, test_only=False, **kwargs: Any) -> ResNetADN:
-    
+
+_COMMON_META = {
+    "min_size": (1, 1),
+    "categories": _IMAGENET_CATEGORIES,
+}
+
+
+class ResNet50_Weights(WeightsEnum):
+    IMAGENET1K_V1 = Weights(
+        url="https://download.pytorch.org/models/resnet50-0676ba61.pth",
+        transforms=partial(ImageClassification, crop_size=224),
+        meta={
+            **_COMMON_META,
+            "num_params": 25557032,
+            "recipe": "https://github.com/pytorch/vision/tree/main/references/classification#resnet",
+            "_metrics": {
+                "ImageNet-1K": {
+                    "acc@1": 76.130,
+                    "acc@5": 92.862,
+                }
+            },
+            "_ops": 4.089,
+            "_file_size": 97.781,
+            "_docs": """These weights reproduce closely the results of the paper using a simple training recipe.""",
+        },
+    )
+    IMAGENET1K_V2 = Weights(
+        url="https://download.pytorch.org/models/resnet50-11ad3fa6.pth",
+        transforms=partial(ImageClassification, crop_size=224, resize_size=232),
+        meta={
+            **_COMMON_META,
+            "num_params": 25557032,
+            "recipe": "https://github.com/pytorch/vision/issues/3995#issuecomment-1013906621",
+            "_metrics": {
+                "ImageNet-1K": {
+                    "acc@1": 80.858,
+                    "acc@5": 95.434,
+                }
+            },
+            "_ops": 4.089,
+            "_file_size": 97.79,
+            "_docs": """
+                These weights improve upon the results of the original paper by using TorchVision's `new training recipe
+                <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`_.
+            """,
+        },
+    )
+    DEFAULT = IMAGENET1K_V2
+
+
+class ResNet101_Weights(WeightsEnum):
+    IMAGENET1K_V1 = Weights(
+        url="https://download.pytorch.org/models/resnet101-63fe2227.pth",
+        transforms=partial(ImageClassification, crop_size=224),
+        meta={
+            **_COMMON_META,
+            "num_params": 44549160,
+            "recipe": "https://github.com/pytorch/vision/tree/main/references/classification#resnet",
+            "_metrics": {
+                "ImageNet-1K": {
+                    "acc@1": 77.374,
+                    "acc@5": 93.546,
+                }
+            },
+            "_ops": 7.801,
+            "_file_size": 170.511,
+            "_docs": """These weights reproduce closely the results of the paper using a simple training recipe.""",
+        },
+    )
+    IMAGENET1K_V2 = Weights(
+        url="https://download.pytorch.org/models/resnet101-cd907fc2.pth",
+        transforms=partial(ImageClassification, crop_size=224, resize_size=232),
+        meta={
+            **_COMMON_META,
+            "num_params": 44549160,
+            "recipe": "https://github.com/pytorch/vision/issues/3995#new-recipe",
+            "_metrics": {
+                "ImageNet-1K": {
+                    "acc@1": 81.886,
+                    "acc@5": 95.780,
+                }
+            },
+            "_ops": 7.801,
+            "_file_size": 170.53,
+            "_docs": """
+                These weights improve upon the results of the original paper by using TorchVision's `new training recipe
+                <https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/>`_.
+            """,
+        },
+    )
+    DEFAULT = IMAGENET1K_V2
+
+
+@register_model()
+@handle_legacy_interface(weights=("pretrained", ResNet50_Weights.IMAGENET1K_V1))
+def resnet50(*, weights: Optional[ResNet50_Weights] = None, progress: bool = True, **kwargs: Any) -> ResNet:
+    """ResNet-50 from `Deep Residual Learning for Image Recognition <https://arxiv.org/abs/1512.03385>`__.
+
+    .. note::
+       The bottleneck of TorchVision places the stride for downsampling to the second 3x3
+       convolution while the original paper places it to the first 1x1 convolution.
+       This variant improves the accuracy and is known as `ResNet V1.5
+       <https://ngc.nvidia.com/catalog/model-scripts/nvidia:resnet_50_v1_5_for_pytorch>`_.
+
+    Args:
+        weights (:class:`~torchvision.models.ResNet50_Weights`, optional): The
+            pretrained weights to use. See
+            :class:`~torchvision.models.ResNet50_Weights` below for
+            more details, and possible values. By default, no pre-trained
+            weights are used.
+        progress (bool, optional): If True, displays a progress bar of the
+            download to stderr. Default is True.
+        **kwargs: parameters passed to the ``torchvision.models.resnet.ResNet``
+            base class. Please refer to the `source code
+            <https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py>`_
+            for more details about this class.
+
+    .. autoclass:: torchvision.models.ResNet50_Weights
+        :members:
+    """
+    weights = ResNet50_Weights.verify(weights)
+
     return _resnet(Bottleneck, [3, 4, 6, 3], weights, progress, **kwargs)
 
 
-def resnet101(*, weights = None, progress: bool = True, **kwargs: Any) -> ResNetADN:
+@register_model()
+@handle_legacy_interface(weights=("pretrained", ResNet101_Weights.IMAGENET1K_V1))
+def resnet101(*, weights: Optional[ResNet101_Weights] = None, progress: bool = True, **kwargs: Any) -> ResNet:
+    """ResNet-101 from `Deep Residual Learning for Image Recognition <https://arxiv.org/abs/1512.03385>`__.
+
+    .. note::
+       The bottleneck of TorchVision places the stride for downsampling to the second 3x3
+       convolution while the original paper places it to the first 1x1 convolution.
+       This variant improves the accuracy and is known as `ResNet V1.5
+       <https://ngc.nvidia.com/catalog/model-scripts/nvidia:resnet_50_v1_5_for_pytorch>`_.
+
+    Args:
+        weights (:class:`~torchvision.models.ResNet101_Weights`, optional): The
+            pretrained weights to use. See
+            :class:`~torchvision.models.ResNet101_Weights` below for
+            more details, and possible values. By default, no pre-trained
+            weights are used.
+        progress (bool, optional): If True, displays a progress bar of the
+            download to stderr. Default is True.
+        **kwargs: parameters passed to the ``torchvision.models.resnet.ResNet``
+            base class. Please refer to the `source code
+            <https://github.com/pytorch/vision/blob/main/torchvision/models/resnet.py>`_
+            for more details about this class.
+
+    .. autoclass:: torchvision.models.ResNet101_Weights
+        :members:
+    """
+    weights = ResNet101_Weights.verify(weights)
+
     return _resnet(Bottleneck, [3, 4, 23, 3], weights, progress, **kwargs)
-
-
