@@ -244,6 +244,7 @@ class ResNet(nn.Module):
             
             # load pytorch resnet50v2 pretrained model (acc@1 : 80.858, acc@5 : 95.434)
             url = "https://download.pytorch.org/models/resnet50-11ad3fa6.pth"
+            
             state = torch.hub.load_state_dict_from_url(url)
             
             del state["fc.weight"]
