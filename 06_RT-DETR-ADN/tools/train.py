@@ -77,6 +77,9 @@ torchrun --nproc_per_node=2 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coc
     2>&1 | tee -a ./logs/baseline_ResNetV1_super.txt
 
 # train
+export CUDA_VISIBLE_DEVICES=0
+python tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \
+    2>&1 | tee ./logs/test.txt
 
 
 # test on single-gpu
