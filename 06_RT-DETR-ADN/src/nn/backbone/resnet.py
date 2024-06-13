@@ -239,9 +239,11 @@ class ResNet(nn.Module):
             setattr(self, f"layer{i+1}", nn.Sequential(*layers))
 
         if pretrained:
-            # load pytorch resnet50v1 pretrained model
+            # load pytorch resnet50v1 pretrained model (acc@1 : 76.130, acc@5 : 92.862)
+            # url="https://download.pytorch.org/models/resnet50-0676ba61.pth"
             
-            url="https://download.pytorch.org/models/resnet50-0676ba61.pth"
+            # load pytorch resnet50v2 pretrained model (acc@1 : 80.858, acc@5 : 95.434)
+            url = "https://download.pytorch.org/models/resnet50-11ad3fa6.pth"
             state = torch.hub.load_state_dict_from_url(url)
             
             del state["fc.weight"]

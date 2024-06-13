@@ -1,0 +1,446 @@
+WARNING:torch.distributed.run:
+*****************************************
+Setting OMP_NUM_THREADS environment variable for each process to be 1 in default, to avoid your system being overloaded, please further tune the variable for optimal performance in your application as needed. 
+*****************************************
+Initialized distributed mode...
+Start training
+start creating model... (in yaml_config.py)
+make layer i: 0, num_blocks: 3
+make layer i: 1, num_blocks: 4
+Downloading: "https://download.pytorch.org/models/resnet50-11ad3fa6.pth" to /home/hslee/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
+make layer i: 2, num_blocks: 6
+make layer i: 3, num_blocks: 3
+Downloading: "https://download.pytorch.org/models/resnet50-11ad3fa6.pth" to /home/hslee/.cache/torch/hub/checkpoints/resnet50-11ad3fa6.pth
+  0%|          | 0.00/97.8M [00:00<?, ?B/s]  1%|          | 1.04M/97.8M [00:00<00:09, 10.9MB/s]  0%|          | 0.00/97.8M [00:00<?, ?B/s]  0%|          | 440k/97.8M [00:00<00:22, 4.48MB/s]  2%|▏         | 2.08M/97.8M [00:00<00:11, 8.83MB/s]  1%|          | 1.01M/97.8M [00:00<00:18, 5.41MB/s]  3%|▎         | 2.95M/97.8M [00:00<00:14, 6.94MB/s]  2%|▏         | 1.70M/97.8M [00:00<00:16, 6.17MB/s]  2%|▏         | 2.29M/97.8M [00:00<00:16, 6.07MB/s]  4%|▎         | 3.65M/97.8M [00:00<00:15, 6.53MB/s]  3%|▎         | 3.04M/97.8M [00:00<00:14, 6.66MB/s]  4%|▍         | 4.30M/97.8M [00:00<00:17, 5.66MB/s]  4%|▍         | 3.74M/97.8M [00:00<00:14, 6.86MB/s]  4%|▍         | 4.40M/97.8M [00:00<00:14, 6.82MB/s]  5%|▍         | 4.86M/97.8M [00:00<00:18, 5.17MB/s]  5%|▌         | 5.29M/97.8M [00:00<00:12, 7.59MB/s]  5%|▌         | 5.37M/97.8M [00:00<00:20, 4.69MB/s]  6%|▋         | 6.13M/97.8M [00:00<00:12, 7.95MB/s]  7%|▋         | 6.99M/97.8M [00:01<00:11, 8.25MB/s]  6%|▌         | 5.83M/97.8M [00:01<00:23, 4.11MB/s]  8%|▊         | 7.87M/97.8M [00:01<00:11, 8.53MB/s]  6%|▋         | 6.23M/97.8M [00:01<00:26, 3.63MB/s]  9%|▉         | 8.77M/97.8M [00:01<00:10, 8.79MB/s] 10%|▉         | 9.71M/97.8M [00:01<00:10, 9.06MB/s]  7%|▋         | 6.59M/97.8M [00:01<00:29, 3.19MB/s] 11%|█         | 10.7M/97.8M [00:01<00:09, 9.31MB/s]  7%|▋         | 6.91M/97.8M [00:01<00:34, 2.78MB/s] 12%|█▏        | 11.6M/97.8M [00:01<00:09, 9.53MB/s] 13%|█▎        | 12.6M/97.8M [00:01<00:09, 9.74MB/s]  7%|▋         | 7.18M/97.8M [00:01<00:38, 2.46MB/s] 14%|█▍        | 13.6M/97.8M [00:01<00:08, 9.91MB/s] 15%|█▍        | 14.6M/97.8M [00:01<00:08, 10.1MB/s]  8%|▊         | 7.42M/97.8M [00:01<00:44, 2.15MB/s] 16%|█▌        | 15.6M/97.8M [00:01<00:08, 10.2MB/s]  8%|▊         | 7.63M/97.8M [00:02<00:48, 1.94MB/s] 17%|█▋        | 16.6M/97.8M [00:02<00:08, 10.3MB/s] 18%|█▊        | 17.6M/97.8M [00:02<00:08, 10.4MB/s]  8%|▊         | 7.83M/97.8M [00:02<00:54, 1.73MB/s] 19%|█▉        | 18.7M/97.8M [00:02<00:07, 10.5MB/s]  8%|▊         | 8.00M/97.8M [00:02<00:58, 1.61MB/s] 20%|██        | 19.7M/97.8M [00:02<00:07, 10.5MB/s] 21%|██        | 20.7M/97.8M [00:02<00:07, 10.6MB/s]  8%|▊         | 8.16M/97.8M [00:02<01:02, 1.51MB/s] 22%|██▏       | 21.8M/97.8M [00:02<00:07, 10.6MB/s]  8%|▊         | 8.30M/97.8M [00:02<01:04, 1.45MB/s] 23%|██▎       | 22.8M/97.8M [00:02<00:07, 10.6MB/s]  9%|▊         | 8.45M/97.8M [00:02<01:06, 1.41MB/s] 24%|██▍       | 23.8M/97.8M [00:02<00:07, 10.7MB/s]  9%|▉         | 8.58M/97.8M [00:02<01:08, 1.36MB/s] 25%|██▌       | 24.8M/97.8M [00:02<00:07, 10.7MB/s]  9%|▉         | 8.71M/97.8M [00:03<01:08, 1.36MB/s] 26%|██▋       | 25.9M/97.8M [00:02<00:07, 10.6MB/s]  9%|▉         | 8.84M/97.8M [00:03<01:11, 1.30MB/s] 27%|██▋       | 26.9M/97.8M [00:03<00:06, 10.7MB/s]  9%|▉         | 8.97M/97.8M [00:03<01:12, 1.28MB/s] 29%|██▊       | 27.9M/97.8M [00:03<00:06, 10.7MB/s] 30%|██▉       | 29.0M/97.8M [00:03<00:06, 10.7MB/s]  9%|▉         | 9.09M/97.8M [00:03<01:14, 1.25MB/s] 31%|███       | 30.0M/97.8M [00:03<00:06, 10.7MB/s]  9%|▉         | 9.22M/97.8M [00:03<01:14, 1.25MB/s] 32%|███▏      | 31.0M/97.8M [00:03<00:06, 10.7MB/s] 10%|▉         | 9.34M/97.8M [00:03<01:15, 1.22MB/s] 33%|███▎      | 32.1M/97.8M [00:03<00:06, 10.8MB/s] 10%|▉         | 9.46M/97.8M [00:03<01:15, 1.22MB/s] 34%|███▍      | 33.1M/97.8M [00:03<00:06, 10.8MB/s] 10%|▉         | 9.58M/97.8M [00:03<01:18, 1.18MB/s] 35%|███▍      | 34.1M/97.8M [00:03<00:06, 10.8MB/s] 10%|▉         | 9.70M/97.8M [00:03<01:18, 1.18MB/s] 36%|███▌      | 35.2M/97.8M [00:03<00:06, 10.8MB/s] 10%|█         | 9.83M/97.8M [00:04<01:18, 1.18MB/s] 37%|███▋      | 36.2M/97.8M [00:03<00:06, 10.8MB/s] 10%|█         | 9.95M/97.8M [00:04<01:17, 1.19MB/s] 38%|███▊      | 37.2M/97.8M [00:04<00:05, 10.7MB/s] 10%|█         | 10.1M/97.8M [00:04<01:16, 1.21MB/s] 39%|███▉      | 38.2M/97.8M [00:04<00:05, 10.7MB/s] 10%|█         | 10.2M/97.8M [00:04<01:16, 1.20MB/s] 40%|████      | 39.3M/97.8M [00:04<00:05, 10.7MB/s] 11%|█         | 10.3M/97.8M [00:04<01:17, 1.19MB/s] 41%|████      | 40.3M/97.8M [00:04<00:05, 10.8MB/s] 11%|█         | 10.5M/97.8M [00:04<01:16, 1.19MB/s] 42%|████▏     | 41.4M/97.8M [00:04<00:05, 10.7MB/s] 43%|████▎     | 42.4M/97.8M [00:04<00:05, 10.7MB/s] 11%|█         | 10.6M/97.8M [00:04<01:17, 1.18MB/s] 44%|████▍     | 43.4M/97.8M [00:04<00:05, 10.8MB/s] 11%|█         | 10.7M/97.8M [00:04<01:17, 1.18MB/s] 45%|████▌     | 44.5M/97.8M [00:04<00:05, 10.8MB/s] 11%|█         | 10.8M/97.8M [00:04<01:17, 1.18MB/s] 47%|████▋     | 45.5M/97.8M [00:04<00:05, 10.7MB/s] 11%|█         | 10.9M/97.8M [00:04<01:16, 1.19MB/s] 48%|████▊     | 46.5M/97.8M [00:04<00:05, 10.7MB/s] 11%|█▏        | 11.1M/97.8M [00:05<01:15, 1.20MB/s] 49%|████▊     | 47.6M/97.8M [00:05<00:04, 10.7MB/s] 11%|█▏        | 11.2M/97.8M [00:05<01:15, 1.20MB/s] 50%|████▉     | 48.6M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 11.3M/97.8M [00:05<01:16, 1.19MB/s] 51%|█████     | 49.6M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 11.4M/97.8M [00:05<01:14, 1.21MB/s] 52%|█████▏    | 50.7M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 11.6M/97.8M [00:05<01:13, 1.23MB/s] 53%|█████▎    | 51.7M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 11.7M/97.8M [00:05<01:13, 1.23MB/s] 54%|█████▍    | 52.7M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 11.8M/97.8M [00:05<01:12, 1.24MB/s] 55%|█████▍    | 53.8M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 12.0M/97.8M [00:05<01:11, 1.27MB/s] 56%|█████▌    | 54.8M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 12.1M/97.8M [00:05<01:09, 1.29MB/s] 57%|█████▋    | 55.8M/97.8M [00:05<00:04, 10.7MB/s] 12%|█▏        | 12.2M/97.8M [00:06<01:10, 1.27MB/s] 58%|█████▊    | 56.8M/97.8M [00:05<00:04, 10.7MB/s] 13%|█▎        | 12.3M/97.8M [00:06<01:10, 1.27MB/s] 59%|█████▉    | 57.8M/97.8M [00:06<00:03, 10.6MB/s] 13%|█▎        | 12.5M/97.8M [00:06<01:11, 1.25MB/s] 60%|██████    | 58.9M/97.8M [00:06<00:03, 10.7MB/s] 61%|██████▏   | 59.9M/97.8M [00:06<00:03, 10.7MB/s] 13%|█▎        | 12.6M/97.8M [00:06<01:12, 1.23MB/s] 62%|██████▏   | 61.0M/97.8M [00:06<00:03, 10.7MB/s] 13%|█▎        | 12.7M/97.8M [00:06<01:13, 1.21MB/s] 63%|██████▎   | 62.0M/97.8M [00:06<00:03, 10.7MB/s] 13%|█▎        | 12.8M/97.8M [00:06<01:13, 1.21MB/s] 64%|██████▍   | 63.0M/97.8M [00:06<00:03, 10.7MB/s] 13%|█▎        | 13.0M/97.8M [00:06<01:15, 1.18MB/s] 65%|██████▌   | 64.0M/97.8M [00:06<00:03, 10.8MB/s] 13%|█▎        | 13.1M/97.8M [00:06<01:15, 1.18MB/s] 67%|██████▋   | 65.1M/97.8M [00:06<00:03, 10.8MB/s] 14%|█▎        | 13.2M/97.8M [00:06<01:15, 1.18MB/s] 68%|██████▊   | 66.1M/97.8M [00:06<00:03, 10.8MB/s] 14%|█▎        | 13.3M/97.8M [00:07<01:18, 1.13MB/s] 69%|██████▊   | 67.2M/97.8M [00:06<00:02, 10.8MB/s] 14%|█▎        | 13.4M/97.8M [00:07<01:18, 1.13MB/s] 70%|██████▉   | 68.2M/97.8M [00:07<00:02, 10.8MB/s] 14%|█▍        | 13.6M/97.8M [00:07<01:16, 1.15MB/s] 71%|███████   | 69.2M/97.8M [00:07<00:02, 10.8MB/s] 14%|█▍        | 13.7M/97.8M [00:07<01:16, 1.16MB/s] 72%|███████▏  | 70.3M/97.8M [00:07<00:02, 10.8MB/s] 14%|█▍        | 13.8M/97.8M [00:07<01:14, 1.18MB/s] 73%|███████▎  | 71.3M/97.8M [00:07<00:02, 10.8MB/s] 14%|█▍        | 13.9M/97.8M [00:07<01:16, 1.15MB/s] 74%|███████▍  | 72.3M/97.8M [00:07<00:02, 10.8MB/s] 75%|███████▌  | 73.4M/97.8M [00:07<00:02, 10.7MB/s] 14%|█▍        | 14.0M/97.8M [00:07<01:15, 1.17MB/s] 76%|███████▌  | 74.4M/97.8M [00:07<00:02, 10.8MB/s] 14%|█▍        | 14.2M/97.8M [00:07<01:15, 1.16MB/s] 77%|███████▋  | 75.5M/97.8M [00:07<00:02, 10.8MB/s] 15%|█▍        | 14.3M/97.8M [00:07<01:14, 1.18MB/s] 78%|███████▊  | 76.5M/97.8M [00:07<00:02, 10.8MB/s] 15%|█▍        | 14.4M/97.8M [00:08<01:17, 1.13MB/s] 79%|███████▉  | 77.5M/97.8M [00:07<00:01, 10.8MB/s] 15%|█▍        | 14.5M/97.8M [00:08<01:17, 1.13MB/s] 80%|████████  | 78.6M/97.8M [00:08<00:01, 10.8MB/s] 15%|█▍        | 14.6M/97.8M [00:08<01:16, 1.14MB/s] 81%|████████▏ | 79.6M/97.8M [00:08<00:01, 10.8MB/s] 15%|█▌        | 14.8M/97.8M [00:08<01:14, 1.16MB/s] 82%|████████▏ | 80.6M/97.8M [00:08<00:01, 10.7MB/s] 15%|█▌        | 14.9M/97.8M [00:08<01:12, 1.20MB/s] 84%|████████▎ | 81.7M/97.8M [00:08<00:01, 10.7MB/s] 15%|█▌        | 15.0M/97.8M [00:08<01:11, 1.21MB/s] 85%|████████▍ | 82.7M/97.8M [00:08<00:01, 10.7MB/s] 16%|█▌        | 15.2M/97.8M [00:08<01:10, 1.24MB/s] 86%|████████▌ | 83.7M/97.8M [00:08<00:01, 10.7MB/s] 16%|█▌        | 15.3M/97.8M [00:08<01:11, 1.20MB/s] 87%|████████▋ | 84.8M/97.8M [00:08<00:01, 10.7MB/s] 88%|████████▊ | 85.8M/97.8M [00:08<00:01, 10.8MB/s] 16%|█▌        | 15.4M/97.8M [00:08<01:13, 1.17MB/s] 89%|████████▉ | 86.9M/97.8M [00:08<00:01, 10.8MB/s] 16%|█▌        | 15.5M/97.8M [00:09<01:17, 1.11MB/s] 90%|████████▉ | 87.9M/97.8M [00:08<00:00, 10.8MB/s] 16%|█▌        | 15.6M/97.8M [00:09<01:16, 1.12MB/s] 91%|█████████ | 89.0M/97.8M [00:09<00:00, 10.8MB/s] 16%|█▌        | 15.8M/97.8M [00:09<01:16, 1.13MB/s] 92%|█████████▏| 90.0M/97.8M [00:09<00:00, 10.8MB/s] 16%|█▌        | 15.9M/97.8M [00:09<01:15, 1.13MB/s] 93%|█████████▎| 91.0M/97.8M [00:09<00:00, 10.8MB/s] 16%|█▋        | 16.0M/97.8M [00:09<01:15, 1.13MB/s] 94%|█████████▍| 92.1M/97.8M [00:09<00:00, 10.8MB/s] 16%|█▋        | 16.1M/97.8M [00:09<01:14, 1.16MB/s] 95%|█████████▌| 93.1M/97.8M [00:09<00:00, 10.8MB/s] 17%|█▋        | 16.2M/97.8M [00:09<01:12, 1.18MB/s] 96%|█████████▋| 94.1M/97.8M [00:09<00:00, 10.8MB/s] 17%|█▋        | 16.4M/97.8M [00:09<01:13, 1.16MB/s] 97%|█████████▋| 95.2M/97.8M [00:09<00:00, 10.8MB/s] 17%|█▋        | 16.5M/97.8M [00:09<01:13, 1.16MB/s] 98%|█████████▊| 96.2M/97.8M [00:09<00:00, 10.8MB/s] 17%|█▋        | 16.6M/97.8M [00:10<01:12, 1.17MB/s] 99%|█████████▉| 97.2M/97.8M [00:09<00:00, 10.8MB/s]100%|██████████| 97.8M/97.8M [00:09<00:00, 10.3MB/s]
+ 17%|█▋        | 16.7M/97.8M [00:10<01:21, 1.04MB/s]Load state_dict from https://download.pytorch.org/models/resnet50-11ad3fa6.pth
+ 17%|█▋        | 16.8M/97.8M [00:10<01:25, 997kB/s]  18%|█▊        | 17.3M/97.8M [00:10<00:44, 1.90MB/s] 19%|█▉        | 18.4M/97.8M [00:10<00:18, 4.59MB/s] 20%|█▉        | 19.5M/97.8M [00:10<00:12, 6.65MB/s] 21%|██        | 20.7M/97.8M [00:10<00:09, 8.15MB/s] 22%|██▏       | 21.8M/97.8M [00:10<00:08, 9.22MB/s] 24%|██▎       | 23.0M/97.8M [00:10<00:07, 10.0MB/s] 25%|██▍       | 24.1M/97.8M [00:10<00:07, 10.6MB/s] 26%|██▌       | 25.3M/97.8M [00:11<00:06, 11.0MB/s] 27%|██▋       | 26.4M/97.8M [00:11<00:06, 11.3MB/s] 28%|██▊       | 27.6M/97.8M [00:11<00:06, 11.5MB/s] 29%|██▉       | 28.7M/97.8M [00:11<00:06, 11.6MB/s] 31%|███       | 29.9M/97.8M [00:11<00:06, 11.7MB/s] 32%|███▏      | 31.0M/97.8M [00:11<00:05, 11.8MB/s] 33%|███▎      | 32.2M/97.8M [00:11<00:05, 11.8MB/s] 34%|███▍      | 33.3M/97.8M [00:11<00:05, 11.9MB/s] 35%|███▌      | 34.5M/97.8M [00:11<00:05, 11.9MB/s] 36%|███▋      | 35.6M/97.8M [00:12<00:05, 11.9MB/s] 38%|███▊      | 36.8M/97.8M [00:12<00:05, 11.9MB/s] 39%|███▉      | 37.9M/97.8M [00:12<00:05, 11.9MB/s] 40%|███▉      | 39.0M/97.8M [00:12<00:05, 11.9MB/s] 41%|████      | 40.2M/97.8M [00:12<00:05, 11.9MB/s] 42%|████▏     | 41.3M/97.8M [00:12<00:04, 11.9MB/s] 43%|████▎     | 42.5M/97.8M [00:12<00:04, 11.9MB/s] 45%|████▍     | 43.6M/97.8M [00:12<00:04, 11.9MB/s] 46%|████▌     | 44.8M/97.8M [00:12<00:04, 11.9MB/s] 47%|████▋     | 45.9M/97.8M [00:12<00:04, 11.9MB/s] 48%|████▊     | 47.1M/97.8M [00:13<00:04, 11.9MB/s] 49%|████▉     | 48.2M/97.8M [00:13<00:04, 12.0MB/s] 50%|█████     | 49.4M/97.8M [00:13<00:04, 11.9MB/s] 52%|█████▏    | 50.5M/97.8M [00:13<00:04, 11.9MB/s] 53%|█████▎    | 51.7M/97.8M [00:13<00:04, 12.0MB/s] 54%|█████▍    | 52.8M/97.8M [00:13<00:03, 11.9MB/s] 55%|█████▌    | 53.9M/97.8M [00:13<00:03, 11.9MB/s] 56%|█████▋    | 55.1M/97.8M [00:13<00:03, 11.9MB/s] 58%|█████▊    | 56.2M/97.8M [00:13<00:03, 11.9MB/s] 59%|█████▊    | 57.4M/97.8M [00:13<00:03, 11.9MB/s] 60%|█████▉    | 58.5M/97.8M [00:14<00:03, 11.9MB/s] 61%|██████    | 59.7M/97.8M [00:14<00:03, 11.9MB/s] 62%|██████▏   | 60.8M/97.8M [00:14<00:03, 11.9MB/s] 63%|██████▎   | 62.0M/97.8M [00:14<00:03, 11.9MB/s] 65%|██████▍   | 63.1M/97.8M [00:14<00:03, 11.9MB/s] 66%|██████▌   | 64.2M/97.8M [00:14<00:02, 11.9MB/s] 67%|██████▋   | 65.4M/97.8M [00:14<00:02, 11.9MB/s] 68%|██████▊   | 66.5M/97.8M [00:14<00:02, 11.9MB/s] 69%|██████▉   | 67.7M/97.8M [00:14<00:02, 11.9MB/s] 70%|███████   | 68.8M/97.8M [00:14<00:02, 11.9MB/s] 72%|███████▏  | 70.0M/97.8M [00:15<00:02, 11.9MB/s] 73%|███████▎  | 71.1M/97.8M [00:15<00:02, 11.9MB/s] 74%|███████▍  | 72.3M/97.8M [00:15<00:02, 11.9MB/s] 75%|███████▌  | 73.4M/97.8M [00:15<00:02, 11.9MB/s] 76%|███████▌  | 74.5M/97.8M [00:15<00:02, 11.9MB/s] 77%|███████▋  | 75.7M/97.8M [00:15<00:01, 11.9MB/s] 79%|███████▊  | 76.8M/97.8M [00:15<00:01, 11.9MB/s] 80%|███████▉  | 78.0M/97.8M [00:15<00:01, 11.9MB/s] 81%|████████  | 79.1M/97.8M [00:15<00:01, 12.0MB/s] 82%|████████▏ | 80.3M/97.8M [00:15<00:01, 11.9MB/s] 83%|████████▎ | 81.4M/97.8M [00:16<00:01, 11.9MB/s] 84%|████████▍ | 82.6M/97.8M [00:16<00:01, 11.9MB/s] 86%|████████▌ | 83.7M/97.8M [00:16<00:01, 11.9MB/s] 87%|████████▋ | 84.9M/97.8M [00:16<00:01, 11.9MB/s] 88%|████████▊ | 86.0M/97.8M [00:16<00:01, 11.9MB/s] 89%|████████▉ | 87.1M/97.8M [00:16<00:00, 11.9MB/s] 90%|█████████ | 88.3M/97.8M [00:16<00:00, 11.9MB/s] 91%|█████████▏| 89.4M/97.8M [00:16<00:00, 12.0MB/s] 93%|█████████▎| 90.6M/97.8M [00:16<00:00, 11.9MB/s] 94%|█████████▍| 91.7M/97.8M [00:16<00:00, 11.9MB/s] 95%|█████████▍| 92.9M/97.8M [00:17<00:00, 12.0MB/s] 96%|█████████▌| 94.0M/97.8M [00:17<00:00, 11.9MB/s] 97%|█████████▋| 95.2M/97.8M [00:17<00:00, 11.9MB/s] 99%|█████████▊| 96.3M/97.8M [00:17<00:00, 11.9MB/s]100%|█████████▉| 97.5M/97.8M [00:17<00:00, 12.0MB/s]100%|██████████| 97.8M/97.8M [00:17<00:00, 5.87MB/s]
+self.model (in solver.py): 
+DistributedDataParallel(
+  (module): RTDETR(
+    (backbone): ResNet(
+      (conv1): Conv2d(3, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+      (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+      (relu): ReLU(inplace=True)
+      (maxpool): MaxPool2d(kernel_size=3, stride=2, padding=1, dilation=1, ceil_mode=False)
+      (layer1): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(64, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (1): FrozenBatchNorm2d(256, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(256, 64, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv2): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(64, eps=1e-05)
+          (conv3): Conv2d(64, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(256, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer2): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(256, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(256, 512, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(512, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(512, 128, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv2): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(128, eps=1e-05)
+          (conv3): Conv2d(128, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(512, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer3): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(512, 1024, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(1024, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (3): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (4): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (5): Bottleneck(
+          (conv1): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv2): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(256, eps=1e-05)
+          (conv3): Conv2d(256, 1024, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(1024, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+      (layer4): Sequential(
+        (0): Bottleneck(
+          (conv1): Conv2d(1024, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+          (downsample): Sequential(
+            (0): Conv2d(1024, 2048, kernel_size=(1, 1), stride=(2, 2), bias=False)
+            (1): FrozenBatchNorm2d(2048, eps=1e-05)
+          )
+        )
+        (1): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+        (2): Bottleneck(
+          (conv1): Conv2d(2048, 512, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn1): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv2): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+          (bn2): FrozenBatchNorm2d(512, eps=1e-05)
+          (conv3): Conv2d(512, 2048, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (bn3): FrozenBatchNorm2d(2048, eps=1e-05)
+          (relu): ReLU(inplace=True)
+        )
+      )
+    )
+    (decoder): RTDETRTransformer(
+      (input_proj): ModuleList(
+        (0-2): 3 x Sequential(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (decoder): TransformerDecoder(
+        (layers): ModuleList(
+          (0-5): 6 x TransformerDecoderLayer(
+            (self_attn): MultiheadAttention(
+              (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout1): Dropout(p=0.0, inplace=False)
+            (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (cross_attn): MSDeformableAttention(
+              (sampling_offsets): Linear(in_features=256, out_features=192, bias=True)
+              (attention_weights): Linear(in_features=256, out_features=96, bias=True)
+              (value_proj): Linear(in_features=256, out_features=256, bias=True)
+              (output_proj): Linear(in_features=256, out_features=256, bias=True)
+            )
+            (dropout2): Dropout(p=0.0, inplace=False)
+            (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+            (linear1): Linear(in_features=256, out_features=1024, bias=True)
+            (dropout3): Dropout(p=0.0, inplace=False)
+            (linear2): Linear(in_features=1024, out_features=256, bias=True)
+            (dropout4): Dropout(p=0.0, inplace=False)
+            (norm3): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+          )
+        )
+      )
+      (denoising_class_embed): Embedding(81, 256, padding_idx=80)
+      (query_pos_head): MLP(
+        (layers): ModuleList(
+          (0): Linear(in_features=4, out_features=512, bias=True)
+          (1): Linear(in_features=512, out_features=256, bias=True)
+        )
+        (act): ReLU(inplace=True)
+      )
+      (enc_output): Sequential(
+        (0): Linear(in_features=256, out_features=256, bias=True)
+        (1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+      )
+      (enc_score_head): Linear(in_features=256, out_features=80, bias=True)
+      (enc_bbox_head): MLP(
+        (layers): ModuleList(
+          (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+          (2): Linear(in_features=256, out_features=4, bias=True)
+        )
+        (act): ReLU(inplace=True)
+      )
+      (dec_score_head): ModuleList(
+        (0-5): 6 x Linear(in_features=256, out_features=80, bias=True)
+      )
+      (dec_bbox_head): ModuleList(
+        (0-5): 6 x MLP(
+          (layers): ModuleList(
+            (0-1): 2 x Linear(in_features=256, out_features=256, bias=True)
+            (2): Linear(in_features=256, out_features=4, bias=True)
+          )
+          (act): ReLU(inplace=True)
+        )
+      )
+    )
+    (encoder): HybridEncoder(
+      (input_proj): ModuleList(
+        (0): Sequential(
+          (0): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (1): Sequential(
+          (0): Conv2d(1024, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+        (2): Sequential(
+          (0): Conv2d(2048, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (1): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+        )
+      )
+      (encoder): ModuleList(
+        (0): TransformerEncoder(
+          (layers): ModuleList(
+            (0): TransformerEncoderLayer(
+              (self_attn): MultiheadAttention(
+                (out_proj): NonDynamicallyQuantizableLinear(in_features=256, out_features=256, bias=True)
+              )
+              (linear1): Linear(in_features=256, out_features=1024, bias=True)
+              (dropout): Dropout(p=0.0, inplace=False)
+              (linear2): Linear(in_features=1024, out_features=256, bias=True)
+              (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+              (dropout1): Dropout(p=0.0, inplace=False)
+              (dropout2): Dropout(p=0.0, inplace=False)
+              (activation): GELU(approximate='none')
+            )
+          )
+        )
+      )
+      (lateral_convs): ModuleList(
+        (0-1): 2 x ConvNormLayer(
+          (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+      )
+      (fpn_blocks): ModuleList(
+        (0-1): 2 x CSPRepLayer(
+          (conv1): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (conv2): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (bottlenecks): Sequential(
+            (0): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (1): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (2): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+          )
+          (conv3): Identity()
+        )
+      )
+      (downsample_convs): ModuleList(
+        (0-1): 2 x ConvNormLayer(
+          (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(2, 2), padding=(1, 1), bias=False)
+          (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+          (act): SiLU(inplace=True)
+        )
+      )
+      (pan_blocks): ModuleList(
+        (0-1): 2 x CSPRepLayer(
+          (conv1): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (conv2): ConvNormLayer(
+            (conv): Conv2d(512, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+            (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+            (act): SiLU(inplace=True)
+          )
+          (bottlenecks): Sequential(
+            (0): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (1): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+            (2): RepVggBlock(
+              (conv1): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (conv2): ConvNormLayer(
+                (conv): Conv2d(256, 256, kernel_size=(1, 1), stride=(1, 1), bias=False)
+                (norm): SyncBatchNorm(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+                (act): Identity()
+              )
+              (act): SiLU(inplace=True)
+            )
+          )
+          (conv3): Identity()
+        )
+      )
+    )
+  )
+)
+start creating model... (in yaml_config.py)
+start creating model... (in yaml_config.py)
+Initial lr:  [1e-05, 0.0001, 0.0001, 0.0001]
+loading annotations into memory...
+Done (t=11.30s)
+creating index...
+index created!
+loading annotations into memory...
+Done (t=0.37s)
+creating index...
+index created!
+(in det_solver.py) model params, #params : 
+number of params: 42862860
+super_config : [False, False, False, False]
+base_config : [True, True, True, True]
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+[W reducer.cpp:1300] Warning: find_unused_parameters=True was specified in DDP constructor, but did not find any unused parameters in the forward pass. This flag results in an extra traversal of the autograd graph every iteration,  which can adversely affect performance. If your model indeed never has any unused parameters in the forward pass, consider turning this flag off. Note that this warning may be a false positive if your model has flow control causing later iterations to have unused parameters. (function operator())
+Epoch: [0]  [    0/14786]  eta: 7:45:39  lr: 0.000010  loss: 42.5925 (42.5925)  loss_bbox: 1.4385 (1.4385)  loss_bbox_aux_0: 1.4149 (1.4149)  loss_bbox_aux_1: 1.4157 (1.4157)  loss_bbox_aux_2: 1.4312 (1.4312)  loss_bbox_aux_3: 1.4131 (1.4131)  loss_bbox_aux_4: 1.4281 (1.4281)  loss_bbox_aux_5: 1.4626 (1.4626)  loss_bbox_dn_0: 0.8940 (0.8940)  loss_bbox_dn_1: 0.8940 (0.8940)  loss_bbox_dn_2: 0.8940 (0.8940)  loss_bbox_dn_3: 0.8940 (0.8940)  loss_bbox_dn_4: 0.8940 (0.8940)  loss_bbox_dn_5: 0.8940 (0.8940)  loss_giou: 1.6781 (1.6781)  loss_giou_aux_0: 1.6546 (1.6546)  loss_giou_aux_1: 1.6791 (1.6791)  loss_giou_aux_2: 1.6599 (1.6599)  loss_giou_aux_3: 1.6467 (1.6467)  loss_giou_aux_4: 1.6697 (1.6697)  loss_giou_aux_5: 1.7004 (1.7004)  loss_giou_dn_0: 1.3659 (1.3659)  loss_giou_dn_1: 1.3659 (1.3659)  loss_giou_dn_2: 1.3659 (1.3659)  loss_giou_dn_3: 1.3659 (1.3659)  loss_giou_dn_4: 1.3659 (1.3659)  loss_giou_dn_5: 1.3659 (1.3659)  loss_vfl: 0.3428 (0.3428)  loss_vfl_aux_0: 0.3637 (0.3637)  loss_vfl_aux_1: 0.3355 (0.3355)  loss_vfl_aux_2: 0.3762 (0.3762)  loss_vfl_aux_3: 0.3688 (0.3688)  loss_vfl_aux_4: 0.3421 (0.3421)  loss_vfl_aux_5: 0.3512 (0.3512)  loss_vfl_dn_0: 0.8173 (0.8173)  loss_vfl_dn_1: 0.8196 (0.8196)  loss_vfl_dn_2: 0.8176 (0.8176)  loss_vfl_dn_3: 0.8293 (0.8293)  loss_vfl_dn_4: 0.7792 (0.7792)  loss_vfl_dn_5: 0.7968 (0.7968)  time: 1.8896  data: 0.7249  max mem: 2969
+Epoch: [0]  [  100/14786]  eta: 1:09:51  lr: 0.000010  loss: 37.4663 (40.5493)  loss_bbox: 0.9664 (1.1978)  loss_bbox_aux_0: 0.9676 (1.2531)  loss_bbox_aux_1: 0.9565 (1.2282)  loss_bbox_aux_2: 0.9505 (1.2169)  loss_bbox_aux_3: 0.9671 (1.2075)  loss_bbox_aux_4: 0.9605 (1.2027)  loss_bbox_aux_5: 0.9833 (1.3001)  loss_bbox_dn_0: 0.7550 (0.8977)  loss_bbox_dn_1: 0.7558 (0.9080)  loss_bbox_dn_2: 0.7555 (0.9174)  loss_bbox_dn_3: 0.7530 (0.9257)  loss_bbox_dn_4: 0.7516 (0.9327)  loss_bbox_dn_5: 0.7500 (0.9389)  loss_giou: 1.4766 (1.4841)  loss_giou_aux_0: 1.4693 (1.5128)  loss_giou_aux_1: 1.4723 (1.5004)  loss_giou_aux_2: 1.4726 (1.4919)  loss_giou_aux_3: 1.4714 (1.4894)  loss_giou_aux_4: 1.4760 (1.4843)  loss_giou_aux_5: 1.4999 (1.5399)  loss_giou_dn_0: 1.3280 (1.3347)  loss_giou_dn_1: 1.3319 (1.3366)  loss_giou_dn_2: 1.3352 (1.3399)  loss_giou_dn_3: 1.3388 (1.3452)  loss_giou_dn_4: 1.3438 (1.3505)  loss_giou_dn_5: 1.3567 (1.3584)  loss_vfl: 0.6250 (0.6234)  loss_vfl_aux_0: 0.5822 (0.5548)  loss_vfl_aux_1: 0.6354 (0.5839)  loss_vfl_aux_2: 0.6257 (0.6094)  loss_vfl_aux_3: 0.6233 (0.6109)  loss_vfl_aux_4: 0.6192 (0.6158)  loss_vfl_aux_5: 0.5686 (0.5252)  loss_vfl_dn_0: 0.5324 (0.6288)  loss_vfl_dn_1: 0.5294 (0.6244)  loss_vfl_dn_2: 0.5456 (0.6206)  loss_vfl_dn_3: 0.5481 (0.6255)  loss_vfl_dn_4: 0.5485 (0.6214)  loss_vfl_dn_5: 0.5392 (0.6104)  time: 0.2530  data: 0.0084  max mem: 5574
+Epoch: [0]  [  200/14786]  eta: 1:07:08  lr: 0.000010  loss: 36.5356 (39.5003)  loss_bbox: 0.7208 (1.0650)  loss_bbox_aux_0: 0.7470 (1.1078)  loss_bbox_aux_1: 0.7449 (1.0902)  loss_bbox_aux_2: 0.7267 (1.0797)  loss_bbox_aux_3: 0.7306 (1.0732)  loss_bbox_aux_4: 0.7355 (1.0684)  loss_bbox_aux_5: 0.7800 (1.1475)  loss_bbox_dn_0: 0.7589 (0.8833)  loss_bbox_dn_1: 0.7564 (0.8873)  loss_bbox_dn_2: 0.7584 (0.8914)  loss_bbox_dn_3: 0.7596 (0.8944)  loss_bbox_dn_4: 0.7604 (0.8976)  loss_bbox_dn_5: 0.7607 (0.9004)  loss_giou: 1.3955 (1.4510)  loss_giou_aux_0: 1.4194 (1.4728)  loss_giou_aux_1: 1.4199 (1.4639)  loss_giou_aux_2: 1.4266 (1.4584)  loss_giou_aux_3: 1.4010 (1.4545)  loss_giou_aux_4: 1.3965 (1.4519)  loss_giou_aux_5: 1.4315 (1.4966)  loss_giou_dn_0: 1.3349 (1.3335)  loss_giou_dn_1: 1.3267 (1.3350)  loss_giou_dn_2: 1.3295 (1.3383)  loss_giou_dn_3: 1.3341 (1.3438)  loss_giou_dn_4: 1.3415 (1.3489)  loss_giou_dn_5: 1.3441 (1.3553)  loss_vfl: 0.7447 (0.7095)  loss_vfl_aux_0: 0.6791 (0.6305)  loss_vfl_aux_1: 0.7220 (0.6626)  loss_vfl_aux_2: 0.7505 (0.6852)  loss_vfl_aux_3: 0.7613 (0.6994)  loss_vfl_aux_4: 0.7500 (0.7041)  loss_vfl_aux_5: 0.6414 (0.5925)  loss_vfl_dn_0: 0.4878 (0.5777)  loss_vfl_dn_1: 0.5064 (0.5818)  loss_vfl_dn_2: 0.5284 (0.5891)  loss_vfl_dn_3: 0.5399 (0.5939)  loss_vfl_dn_4: 0.5382 (0.5955)  loss_vfl_dn_5: 0.5438 (0.5885)  time: 0.2651  data: 0.0095  max mem: 5576
+Epoch: [0]  [  300/14786]  eta: 1:05:49  lr: 0.000010  loss: 35.5792 (38.6381)  loss_bbox: 0.6455 (0.9626)  loss_bbox_aux_0: 0.7228 (1.0139)  loss_bbox_aux_1: 0.6907 (0.9937)  loss_bbox_aux_2: 0.6611 (0.9787)  loss_bbox_aux_3: 0.6504 (0.9709)  loss_bbox_aux_4: 0.6481 (0.9657)  loss_bbox_aux_5: 0.7723 (1.0503)  loss_bbox_dn_0: 0.7970 (0.8683)  loss_bbox_dn_1: 0.7845 (0.8684)  loss_bbox_dn_2: 0.7839 (0.8702)  loss_bbox_dn_3: 0.7839 (0.8719)  loss_bbox_dn_4: 0.7854 (0.8741)  loss_bbox_dn_5: 0.7863 (0.8760)  loss_giou: 1.2718 (1.4121)  loss_giou_aux_0: 1.3210 (1.4435)  loss_giou_aux_1: 1.2889 (1.4306)  loss_giou_aux_2: 1.2746 (1.4207)  loss_giou_aux_3: 1.2723 (1.4159)  loss_giou_aux_4: 1.2646 (1.4132)  loss_giou_aux_5: 1.3561 (1.4698)  loss_giou_dn_0: 1.3143 (1.3306)  loss_giou_dn_1: 1.2988 (1.3301)  loss_giou_dn_2: 1.3080 (1.3331)  loss_giou_dn_3: 1.3094 (1.3380)  loss_giou_dn_4: 1.3077 (1.3425)  loss_giou_dn_5: 1.3095 (1.3477)  loss_vfl: 0.8958 (0.7748)  loss_vfl_aux_0: 0.7331 (0.6708)  loss_vfl_aux_1: 0.7535 (0.7055)  loss_vfl_aux_2: 0.8213 (0.7377)  loss_vfl_aux_3: 0.8722 (0.7577)  loss_vfl_aux_4: 0.8788 (0.7666)  loss_vfl_aux_5: 0.6651 (0.6270)  loss_vfl_dn_0: 0.4644 (0.5442)  loss_vfl_dn_1: 0.4987 (0.5559)  loss_vfl_dn_2: 0.5250 (0.5696)  loss_vfl_dn_3: 0.5386 (0.5772)  loss_vfl_dn_4: 0.5496 (0.5808)  loss_vfl_dn_5: 0.5630 (0.5779)  time: 0.2605  data: 0.0102  max mem: 5577
+Epoch: [0]  [  400/14786]  eta: 1:05:40  lr: 0.000010  loss: 34.2474 (38.1815)  loss_bbox: 0.6088 (0.9074)  loss_bbox_aux_0: 0.6379 (0.9592)  loss_bbox_aux_1: 0.6342 (0.9369)  loss_bbox_aux_2: 0.6127 (0.9222)  loss_bbox_aux_3: 0.6178 (0.9150)  loss_bbox_aux_4: 0.6175 (0.9101)  loss_bbox_aux_5: 0.7011 (1.0056)  loss_bbox_dn_0: 0.6925 (0.8625)  loss_bbox_dn_1: 0.6774 (0.8601)  loss_bbox_dn_2: 0.6701 (0.8606)  loss_bbox_dn_3: 0.6663 (0.8614)  loss_bbox_dn_4: 0.6651 (0.8631)  loss_bbox_dn_5: 0.6640 (0.8646)  loss_giou: 1.2575 (1.3792)  loss_giou_aux_0: 1.2990 (1.4107)  loss_giou_aux_1: 1.2924 (1.3966)  loss_giou_aux_2: 1.2713 (1.3879)  loss_giou_aux_3: 1.2670 (1.3826)  loss_giou_aux_4: 1.2608 (1.3806)  loss_giou_aux_5: 1.3603 (1.4468)  loss_giou_dn_0: 1.3100 (1.3251)  loss_giou_dn_1: 1.2963 (1.3245)  loss_giou_dn_2: 1.2822 (1.3266)  loss_giou_dn_3: 1.2787 (1.3308)  loss_giou_dn_4: 1.2793 (1.3347)  loss_giou_dn_5: 1.2800 (1.3391)  loss_vfl: 0.9515 (0.8264)  loss_vfl_aux_0: 0.7847 (0.7116)  loss_vfl_aux_1: 0.7919 (0.7470)  loss_vfl_aux_2: 0.8583 (0.7785)  loss_vfl_aux_3: 0.9036 (0.8009)  loss_vfl_aux_4: 0.8954 (0.8139)  loss_vfl_aux_5: 0.7142 (0.6550)  loss_vfl_dn_0: 0.4597 (0.5263)  loss_vfl_dn_1: 0.4960 (0.5431)  loss_vfl_dn_2: 0.5315 (0.5613)  loss_vfl_dn_3: 0.5400 (0.5714)  loss_vfl_dn_4: 0.5484 (0.5768)  loss_vfl_dn_5: 0.5535 (0.5756)  time: 0.2585  data: 0.0087  max mem: 5577
+Epoch: [0]  [  500/14786]  eta: 1:04:49  lr: 0.000010  loss: 35.6589 (37.7986)  loss_bbox: 0.6324 (0.8674)  loss_bbox_aux_0: 0.6575 (0.9176)  loss_bbox_aux_1: 0.6411 (0.8950)  loss_bbox_aux_2: 0.6485 (0.8815)  loss_bbox_aux_3: 0.6346 (0.8743)  loss_bbox_aux_4: 0.6338 (0.8698)  loss_bbox_aux_5: 0.7278 (0.9703)  loss_bbox_dn_0: 0.8427 (0.8565)  loss_bbox_dn_1: 0.8225 (0.8521)  loss_bbox_dn_2: 0.8056 (0.8513)  loss_bbox_dn_3: 0.8008 (0.8516)  loss_bbox_dn_4: 0.8006 (0.8531)  loss_bbox_dn_5: 0.8004 (0.8542)  loss_giou: 1.2478 (1.3574)  loss_giou_aux_0: 1.3005 (1.3919)  loss_giou_aux_1: 1.2666 (1.3770)  loss_giou_aux_2: 1.2529 (1.3673)  loss_giou_aux_3: 1.2505 (1.3616)  loss_giou_aux_4: 1.2513 (1.3591)  loss_giou_aux_5: 1.3606 (1.4337)  loss_giou_dn_0: 1.2854 (1.3192)  loss_giou_dn_1: 1.2659 (1.3169)  loss_giou_dn_2: 1.2610 (1.3173)  loss_giou_dn_3: 1.2604 (1.3206)  loss_giou_dn_4: 1.2576 (1.3238)  loss_giou_dn_5: 1.2578 (1.3275)  loss_vfl: 1.0098 (0.8597)  loss_vfl_aux_0: 0.8165 (0.7364)  loss_vfl_aux_1: 0.8680 (0.7701)  loss_vfl_aux_2: 0.9343 (0.8018)  loss_vfl_aux_3: 0.9185 (0.8258)  loss_vfl_aux_4: 0.9417 (0.8442)  loss_vfl_aux_5: 0.7835 (0.6720)  loss_vfl_dn_0: 0.4638 (0.5125)  loss_vfl_dn_1: 0.5238 (0.5336)  loss_vfl_dn_2: 0.5527 (0.5562)  loss_vfl_dn_3: 0.5710 (0.5677)  loss_vfl_dn_4: 0.5947 (0.5749)  loss_vfl_dn_5: 0.5996 (0.5757)  time: 0.2607  data: 0.0101  max mem: 5577
+Epoch: [0]  [  600/14786]  eta: 1:04:07  lr: 0.000010  loss: 34.0290 (37.4724)  loss_bbox: 0.6634 (0.8395)  loss_bbox_aux_0: 0.6785 (0.8896)  loss_bbox_aux_1: 0.6628 (0.8670)  loss_bbox_aux_2: 0.6694 (0.8536)  loss_bbox_aux_3: 0.6692 (0.8471)  loss_bbox_aux_4: 0.6661 (0.8421)  loss_bbox_aux_5: 0.7323 (0.9436)  loss_bbox_dn_0: 0.7325 (0.8465)  loss_bbox_dn_1: 0.7187 (0.8406)  loss_bbox_dn_2: 0.7126 (0.8390)  loss_bbox_dn_3: 0.7099 (0.8390)  loss_bbox_dn_4: 0.7074 (0.8402)  loss_bbox_dn_5: 0.7068 (0.8412)  loss_giou: 1.1961 (1.3440)  loss_giou_aux_0: 1.2084 (1.3823)  loss_giou_aux_1: 1.1468 (1.3651)  loss_giou_aux_2: 1.1896 (1.3544)  loss_giou_aux_3: 1.1740 (1.3481)  loss_giou_aux_4: 1.1865 (1.3456)  loss_giou_aux_5: 1.2963 (1.4260)  loss_giou_dn_0: 1.2634 (1.3132)  loss_giou_dn_1: 1.2372 (1.3086)  loss_giou_dn_2: 1.2247 (1.3080)  loss_giou_dn_3: 1.2228 (1.3105)  loss_giou_dn_4: 1.2227 (1.3134)  loss_giou_dn_5: 1.2232 (1.3166)  loss_vfl: 1.0002 (0.8767)  loss_vfl_aux_0: 0.8339 (0.7489)  loss_vfl_aux_1: 0.8655 (0.7839)  loss_vfl_aux_2: 0.9098 (0.8163)  loss_vfl_aux_3: 0.9082 (0.8392)  loss_vfl_aux_4: 0.9653 (0.8581)  loss_vfl_aux_5: 0.7276 (0.6834)  loss_vfl_dn_0: 0.4770 (0.5027)  loss_vfl_dn_1: 0.5099 (0.5274)  loss_vfl_dn_2: 0.5608 (0.5535)  loss_vfl_dn_3: 0.5876 (0.5665)  loss_vfl_dn_4: 0.6036 (0.5744)  loss_vfl_dn_5: 0.6274 (0.5768)  time: 0.2666  data: 0.0090  max mem: 5582
+Epoch: [0]  [  700/14786]  eta: 1:03:19  lr: 0.000010  loss: 34.4139 (37.1405)  loss_bbox: 0.5705 (0.8112)  loss_bbox_aux_0: 0.6513 (0.8624)  loss_bbox_aux_1: 0.6396 (0.8392)  loss_bbox_aux_2: 0.6233 (0.8258)  loss_bbox_aux_3: 0.5774 (0.8187)  loss_bbox_aux_4: 0.5711 (0.8142)  loss_bbox_aux_5: 0.7231 (0.9165)  loss_bbox_dn_0: 0.7553 (0.8379)  loss_bbox_dn_1: 0.7278 (0.8305)  loss_bbox_dn_2: 0.7335 (0.8282)  loss_bbox_dn_3: 0.7332 (0.8280)  loss_bbox_dn_4: 0.7326 (0.8291)  loss_bbox_dn_5: 0.7329 (0.8299)  loss_giou: 1.2789 (1.3292)  loss_giou_aux_0: 1.3026 (1.3700)  loss_giou_aux_1: 1.3209 (1.3507)  loss_giou_aux_2: 1.2939 (1.3397)  loss_giou_aux_3: 1.2892 (1.3333)  loss_giou_aux_4: 1.2779 (1.3308)  loss_giou_aux_5: 1.3955 (1.4160)  loss_giou_dn_0: 1.2548 (1.3067)  loss_giou_dn_1: 1.2160 (1.2999)  loss_giou_dn_2: 1.2074 (1.2980)  loss_giou_dn_3: 1.2091 (1.2999)  loss_giou_dn_4: 1.2090 (1.3024)  loss_giou_dn_5: 1.2094 (1.3052)  loss_vfl: 0.9114 (0.8908)  loss_vfl_aux_0: 0.7379 (0.7611)  loss_vfl_aux_1: 0.8213 (0.7992)  loss_vfl_aux_2: 0.8616 (0.8300)  loss_vfl_aux_3: 0.8802 (0.8537)  loss_vfl_aux_4: 0.8759 (0.8712)  loss_vfl_aux_5: 0.6827 (0.6954)  loss_vfl_dn_0: 0.4437 (0.4950)  loss_vfl_dn_1: 0.4841 (0.5219)  loss_vfl_dn_2: 0.5371 (0.5508)  loss_vfl_dn_3: 0.5585 (0.5657)  loss_vfl_dn_4: 0.5678 (0.5743)  loss_vfl_dn_5: 0.5752 (0.5780)  time: 0.2654  data: 0.0091  max mem: 5582
+Epoch: [0]  [  800/14786]  eta: 1:02:45  lr: 0.000010  loss: 34.1495 (36.9643)  loss_bbox: 0.6038 (0.7914)  loss_bbox_aux_0: 0.6626 (0.8434)  loss_bbox_aux_1: 0.6426 (0.8192)  loss_bbox_aux_2: 0.6059 (0.8055)  loss_bbox_aux_3: 0.6200 (0.7982)  loss_bbox_aux_4: 0.6076 (0.7942)  loss_bbox_aux_5: 0.7513 (0.8995)  loss_bbox_dn_0: 0.7687 (0.8381)  loss_bbox_dn_1: 0.7465 (0.8291)  loss_bbox_dn_2: 0.7374 (0.8265)  loss_bbox_dn_3: 0.7344 (0.8262)  loss_bbox_dn_4: 0.7339 (0.8272)  loss_bbox_dn_5: 0.7334 (0.8280)  loss_giou: 1.0790 (1.3057)  loss_giou_aux_0: 1.1031 (1.3494)  loss_giou_aux_1: 1.1043 (1.3280)  loss_giou_aux_2: 1.0914 (1.3161)  loss_giou_aux_3: 1.1129 (1.3099)  loss_giou_aux_4: 1.0814 (1.3072)  loss_giou_aux_5: 1.2184 (1.3987)  loss_giou_dn_0: 1.2344 (1.2986)  loss_giou_dn_1: 1.2058 (1.2894)  loss_giou_dn_2: 1.1933 (1.2862)  loss_giou_dn_3: 1.1857 (1.2877)  loss_giou_dn_4: 1.1856 (1.2900)  loss_giou_dn_5: 1.1853 (1.2926)  loss_vfl: 1.1126 (0.9204)  loss_vfl_aux_0: 0.9609 (0.7859)  loss_vfl_aux_1: 1.0492 (0.8268)  loss_vfl_aux_2: 1.0684 (0.8595)  loss_vfl_aux_3: 1.0981 (0.8832)  loss_vfl_aux_4: 1.1097 (0.9002)  loss_vfl_aux_5: 0.8858 (0.7168)  loss_vfl_dn_0: 0.4565 (0.4907)  loss_vfl_dn_1: 0.5060 (0.5194)  loss_vfl_dn_2: 0.5479 (0.5507)  loss_vfl_dn_3: 0.5647 (0.5675)  loss_vfl_dn_4: 0.5767 (0.5767)  loss_vfl_dn_5: 0.5877 (0.5808)  time: 0.2701  data: 0.0100  max mem: 5582
