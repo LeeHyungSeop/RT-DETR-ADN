@@ -110,8 +110,11 @@ class Bottleneck(nn.Module):
         base_width: int = 64,
         dilation: int = 1,
         norm_layer: Optional[Callable[..., nn.Module]] = None,
+        skippable: bool = False, # is this block skippable? @woochul
     ) -> None:
         super().__init__()
+        self.skippable = skippable
+        
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
         width = int(planes * (base_width / 64.0)) * groups
@@ -126,19 +129,34 @@ class Bottleneck(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
-    def forward(self, x: Tensor) -> Tensor:
+    def forward(self, x: Tensor, skip: bool = False) -> Tensor:
         identity = x
 
         out = self.conv1(x)
-        out = self.bn1(out)
+        if self.skippable == False and skip == True:  # Switchable BN. @woochul
+            # print(f"bn1_skip is used")
+            out = self.bn1_skip(out)
+        else:
+            # print(f"bn1 is used")
+            out = self.bn1(out)
         out = self.relu(out)
 
         out = self.conv2(out)
-        out = self.bn2(out)
+        if self.skippable == False and skip == True:  # Switchable BN. @woochul
+            # print(f"bn2_skip is used")
+            out = self.bn2_skip(out)
+        else:
+            # print(f"bn2 is used")
+            out = self.bn2(out)
         out = self.relu(out)
 
         out = self.conv3(out)
-        out = self.bn3(out)
+        if self.skippable == False and skip == True: # Switchable BN. @woochul
+            # print(f"bn3_skip is used")
+            out = self.bn3_skip(out)
+        else:
+            # print(f"bn3 is used")
+            out = self.bn3(out)
 
         if self.downsample is not None:
             identity = self.downsample(x)
@@ -147,6 +165,24 @@ class Bottleneck(nn.Module):
         out = self.relu(out)
 
         return out
+
+class SkippableSequentialBlocks(nn.Sequential):
+    """Skips some blocks in the stage"""
+    def forward(self, input, skip = False):
+        """Extends nn.Sequential's forward for skipping some blocks
+        Args:
+            x (Tensor): input tensor
+            skip (bool): if True, skip the last half blocks in the stage.
+        """
+        for i in range(len(self)):
+            if self[i].skippable == True and skip == True:
+                # print(f"--skip {type(self[i])}")
+                pass
+            else:
+                # print(f"--execute {type(self[i])}")
+                input = self[i](input, skip)
+        # print("")
+        return input
 
 @register
 class ResNet(nn.Module):
@@ -165,6 +201,8 @@ class ResNet(nn.Module):
         norm_layer: Optional[Callable[..., nn.Module]] = None,
         pretrained: bool = False): 
         super().__init__()
+        
+        self.num_skippable_stages = num_stages
         
         if norm_layer is None:
             norm_layer = nn.BatchNorm2d
@@ -236,7 +274,7 @@ class ResNet(nn.Module):
                         norm_layer=norm_layer,
                     )
                 )
-            setattr(self, f"layer{i+1}", nn.Sequential(*layers))
+            setattr(self, f"layer{i+1}", SkippableSequentialBlocks(*layers))
 
         if pretrained:
             # load pytorch resnet50v1 pretrained model (acc@1 : 76.130, acc@5 : 92.862)
@@ -285,15 +323,15 @@ class ResNet(nn.Module):
         x = self.relu(x)
         x = self.maxpool(x)
 
-        x = self.layer1(x)
+        x = self.layer1(x, skip[0])
         
-        x = self.layer2(x)
+        x = self.layer2(x, skip[1])
         outs.append(x)
         
-        x = self.layer3(x)
+        x = self.layer3(x, skip[2])
         outs.append(x)
         
-        x = self.layer4(x)
+        x = self.layer4(x, skip[3])
         outs.append(x)
 
         # for i in range(len(outs)):
@@ -302,7 +340,9 @@ class ResNet(nn.Module):
         return outs
 
     def forward(self, x: Tensor, skip: List[bool] = None) -> Tensor:
-        return self._forward_impl(x)
+        if skip is None:
+            skip = [False for _ in range(self.num_skippable_stages)]
+        return self._forward_impl(x, skip = skip)
 
 
 def _resnet(
@@ -417,7 +457,7 @@ class ResNet101_Weights(WeightsEnum):
 
 
 @register_model()
-@handle_legacy_interface(weights=("pretrained", ResNet50_Weights.IMAGENET1K_V1))
+@handle_legacy_interface(weights=("pretrained", ResNet50_Weights.IMAGENET1K_V2))
 def resnet50(*, weights: Optional[ResNet50_Weights] = None, progress: bool = True, **kwargs: Any) -> ResNet:
     """ResNet-50 from `Deep Residual Learning for Image Recognition <https://arxiv.org/abs/1512.03385>`__.
 

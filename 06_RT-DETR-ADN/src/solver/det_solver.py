@@ -30,7 +30,7 @@ class DetSolver(BaseSolver):
         print(f"(in det_solver.py) model params, #params : ")
         for name, param in self.model.named_parameters():
             if param.requires_grad:
-                # print(name, param.numel())
+                print(name, param.numel())
                 n_parameters += param.numel()
         print('number of params:', n_parameters)
 
