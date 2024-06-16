@@ -239,8 +239,9 @@ class ResNet(nn.Module):
             stride = 1
             blocks = num_blocks
             previous_dilation = self.dilation
+            n_shared = (blocks + 1) // 2  
             
-            print(f"make layer i: {i}, num_blocks: {num_blocks}")
+            print(f"make layer i: {i}, num_blocks: {num_blocks}, num_shared: {n_shared}, num_skippable: {blocks - n_shared}")
             
             if i != 0:
                 dilate = replace_stride_with_dilation[i - 1]
@@ -263,7 +264,7 @@ class ResNet(nn.Module):
                 )
             )
             self.inplanes = planes * 4
-            for _ in range(1, blocks):
+            for i_block in range(1, blocks):
                 layers.append(
                     block(
                         self.inplanes,
@@ -272,6 +273,7 @@ class ResNet(nn.Module):
                         base_width=self.base_width,
                         dilation=self.dilation,
                         norm_layer=norm_layer,
+                        skippable = (i_block >= n_shared), #last half blocks are skippable
                     )
                 )
             setattr(self, f"layer{i+1}", SkippableSequentialBlocks(*layers))
