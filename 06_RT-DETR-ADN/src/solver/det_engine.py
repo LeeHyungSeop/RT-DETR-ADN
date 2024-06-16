@@ -40,6 +40,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
         if scaler is not None:
             with torch.autocast(device_type=str(device), cache_enabled=True):
+                print(f"\t(in det_engine.py) super_config : {super_config}")
                 outputs_super = model(samples, targets, skip=super_config)
                 # outputs_base  = model(samples, targets, skip=base_config)
             
@@ -62,7 +63,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
             optimizer.zero_grad()
 
         else:
-            outputs_super = model(samples, targets)
+            # print(f"\t(in det_engine.py) super_config : {super_config}")
+            outputs_super = model(samples, targets, skip=super_config)
             loss_dict_super = criterion(outputs_super, targets)
             # outputs_base = model(samples, targets)
             # loss_dict_base = criterion(outputs_base, targets)

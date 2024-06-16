@@ -4,5 +4,6 @@ from .presnet import *
 from .resnetADN import *
 from .test_resnet import *
 from .resnet import *
+from .swin_transformer import *
 
 from .common import *

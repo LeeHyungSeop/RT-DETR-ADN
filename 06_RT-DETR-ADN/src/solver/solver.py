@@ -44,8 +44,14 @@ class BaseSolver(object):
         # 2024.06.04 @hslee 
         # setting 2 : if pretrained ResNet50ADN, set backbone.conv1.weight to requires_grad=False
         # because original pretrained model has backbone.conv1.weight requires_grad=False
-        if cfg.yaml_cfg['RTDETR']['backbone'] == 'PResNet':
+        if cfg.yaml_cfg['RTDETR']['backbone'] == 'PResNet' :
             pass
+        elif cfg.yaml_cfg['RTDETR']['backbone'] == 'SwinTransformer' :
+            pass
+            # # set parameter named in 'pre' to requires_grad=False
+            # for name, param in self.model.named_parameters():
+            #     if 'pre' in name:
+            #         param.requires_grad = False
         else :
             # multi GPU
             if dist.is_parallel(self.model):
@@ -54,12 +60,12 @@ class BaseSolver(object):
             else :
                 self.model.backbone.conv1.weight.requires_grad = False
         
-        # # print the all parameters in the model
-        # for name, param in self.model.named_parameters():
-        #     if param.requires_grad:
-        #         print(name)
-        #     else :
-        #         print(f"{name} (not requires_grad)")
+        # print the all parameters in the model
+        for name, param in self.model.named_parameters():
+            if param.requires_grad:
+                print(name)
+            else :
+                print(f"{name} (not requires_grad)")
         
         self.criterion = cfg.criterion.to(device)
         self.postprocessor = cfg.postprocessor
