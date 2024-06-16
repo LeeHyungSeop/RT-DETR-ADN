@@ -41,7 +41,7 @@ class YAMLConfig(BaseConfig):
     @property
     def model(self, ) -> torch.nn.Module:
         print("start creating model... (in yaml_config.py)")
-        print(f"self.yaml_cfg: {self.yaml_cfg}")
+        # print(f"self.yaml_cfg: {self.yaml_cfg}")
         '''
                    ...
             'model' : 'RTDETR'
