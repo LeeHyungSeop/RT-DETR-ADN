@@ -684,7 +684,8 @@ class SwinTransformer(nn.Module):
         # self.head = nn.Linear(num_features, num_classes)
 
         if pretrained:
-            path = "/home/hslee/Desktop/Embedded_AI/INU_4-1/RISE/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/checkpoint_swin-t-epoch297.pth"
+            # path = "/home/hslee/Desktop/Embedded_AI/INU_4-1/RISE/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/checkpoint_swin-t-epoch297.pth"
+            path = "/home/hslee/Desktop/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/checkpoint_swin-t-epoch297.pth"
             state = torch.load(path)['model']
             
             # 2024.06.16 @hslee
@@ -724,7 +725,7 @@ class SwinTransformer(nn.Module):
         
         outs = self.features(x, skip=skip)
         for i in range(len(outs)):
-            outs[i] = self.permute(outs[i])
+            outs[i] = self.permute(outs[i]).contiguous()
             ''''
                     outs[0] torch.Size([4, 192, 80, 80])
                     outs[1] torch.Size([4, 384, 40, 40])

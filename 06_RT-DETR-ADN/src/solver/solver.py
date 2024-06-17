@@ -47,11 +47,11 @@ class BaseSolver(object):
         if cfg.yaml_cfg['RTDETR']['backbone'] == 'PResNet' :
             pass
         elif cfg.yaml_cfg['RTDETR']['backbone'] == 'SwinTransformer' :
-            pass
-            # # set parameter named in 'pre' to requires_grad=False
-            # for name, param in self.model.named_parameters():
-            #     if 'pre' in name:
-            #         param.requires_grad = False
+            # pass
+            # set parameter named in 'pre' to requires_grad=False
+            for name, param in self.model.named_parameters():
+                if 'pre' in name:
+                    param.requires_grad = False
         else :
             # multi GPU
             if dist.is_parallel(self.model):
