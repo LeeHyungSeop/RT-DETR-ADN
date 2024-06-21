@@ -254,28 +254,30 @@ class HybridEncoder(nn.Module):
         self.out_channels = [hidden_dim for _ in range(len(in_channels))]
         self.out_strides = feat_strides
         
-        # 2024.05.23 @hslee : make all the input channels to 256(hidden_dim)
-        # channel projection
-        self.input_proj = nn.ModuleList()
-        for in_channel in in_channels:   # in_channels=[512, 1024, 2048]
-            self.input_proj.append(
-                nn.Sequential(
-                    nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
-                    nn.BatchNorm2d(hidden_dim)
-                )
-            )
-        # 2024.06.15 @hslee : make all the input channels to 256(hidden_dim) for SwinTransformer
-        self.input_proj_swinT = nn.ModuleList()
-        for in_channel in in_channels_swinT:   # in_channels_swinT=[192, 384, 768]
-            self.input_proj_swinT.append(
-                nn.Sequential(
-                    nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
-                    nn.BatchNorm2d(hidden_dim)
-                )
-            )
-            
-            
+        print(f"backbone : {backbone}")
         
+        
+        # 2024.06.15 @hslee : make all the input channels to 256(hidden_dim) for SwinTransformer
+        if backbone == 'SwinTransformer':
+            self.input_proj_swinT = nn.ModuleList()
+            for in_channel in in_channels_swinT:   # in_channels_swinT=[192, 384, 768]
+                self.input_proj_swinT.append(
+                    nn.Sequential(
+                        nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
+                        nn.BatchNorm2d(hidden_dim)
+                    )
+                )
+        # 2024.05.23 @hslee : make all the input channels to 256(hidden_dim)
+        else :
+            # channel projection
+            self.input_proj = nn.ModuleList()
+            for in_channel in in_channels:   # in_channels=[512, 1024, 2048]
+                self.input_proj.append(
+                    nn.Sequential(
+                        nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
+                        nn.BatchNorm2d(hidden_dim)
+                    )
+                )
 
         # encoder transformer
         encoder_layer = TransformerEncoderLayer(

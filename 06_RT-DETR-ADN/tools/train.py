@@ -69,7 +69,7 @@ pip install -r requirements.txt
 # train on multi-gpu
 export CUDA_VISIBLE_DEVICES=0,1
 torchrun --nproc_per_node=2 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \
-    2>&1 | tee ./logs/baseline_SwinT_super.txt
+    2>&1 | tee ./logs/baseline_ResNetV1_base.txt
     
 export CUDA_VISIBLE_DEVICES=0,1
 torchrun --nproc_per_node=2 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \

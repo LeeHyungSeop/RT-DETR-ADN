@@ -147,7 +147,7 @@ class Bottleneck(nn.Module):
             self.bn1_skip = norm_layer(width)
             self.bn2_skip = norm_layer(width)
             self.bn3_skip = norm_layer(planes * self.expansion)
-            
+        
             
         # 2024.04.08 @hslee
         # for test purpose, 
@@ -315,23 +315,23 @@ class ResNetADN(nn.Module):
         # -> base model의 baseline을 학습할 때 문제가 됨 (저자가 제공한 pretrained parameter의 key와 ResNet50ADN model의 key가 다름)
         
         
-        # 1 : my ResNet50ADN
-        if pretrained :
-            path = "/home/hslee/Desktop/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/resnet50_adn_model_145.pth"
-            state = torch.load(path)['model']
+        # # 1 : my ResNet50ADN
+        # if pretrained :
+        #     path = "/home/hslee/Desktop/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/resnet50_adn_model_145.pth"
+        #     state = torch.load(path)['model']
             
-            # 2024.06.04 @hslee
-            # remove keys : "fc.weight", "fc.bias"
-            # because full resnet50 architecture including fc.weight and fc.bias is not used in RT-DETR backbone
-            del state["fc.weight"]
-            del state["fc.bias"]
+        #     # 2024.06.04 @hslee
+        #     # remove keys : "fc.weight", "fc.bias"
+        #     # because full resnet50 architecture including fc.weight and fc.bias is not used in RT-DETR backbone
+        #     del state["fc.weight"]
+        #     del state["fc.bias"]
             
-            # # print all parameter
-            # for name, param in state.items():
-            #     print(f"name : {name}, param : {param}")
+        #     # # print all parameter
+        #     # for name, param in state.items():
+        #     #     print(f"name : {name}, param : {param}")
             
-            self.load_state_dict(state, strict=True)
-            print(f"Load ResNet{depth}-ADN state_dict from {path} -----------------------------------------------")
+        #     self.load_state_dict(state, strict=True)
+        #     print(f"Load ResNet{depth}-ADN state_dict from {path} -----------------------------------------------")
             
             # print("here")
             # # print all parameter
@@ -352,6 +352,24 @@ class ResNetADN(nn.Module):
         #     # print all parameter
         #     for name, param in self.named_parameters():
         #         print(f"name : {name}, param : {param}")
+        
+        # # 3 : PyTorch ResNetV1 pretrained weight
+        if pretrained:
+            # load pytorch resnet50v1 pretrained model (acc@1 : 76.130, acc@5 : 92.862)
+            url = "https://download.pytorch.org/models/resnet50-11ad3fa6.pth"
+            
+            # load pytorch resnet50v2 pretrained model (acc@1 : 80.858, acc@5 : 95.434)
+            # url = "https://download.pytorch.org/models/resnet50-11ad3fa6.pth"
+            
+                
+            state = torch.hub.load_state_dict_from_url(url)
+            
+            del state["fc.weight"]
+            del state["fc.bias"]
+        
+        self.load_state_dict(state, strict=False)
+        print(f"Load state_dict from {url}")
+        
         
         if freeze_at >= 0:
             self._freeze_parameters(self.conv1)

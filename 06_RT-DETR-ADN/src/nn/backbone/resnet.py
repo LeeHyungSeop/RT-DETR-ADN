@@ -129,33 +129,38 @@ class Bottleneck(nn.Module):
         self.downsample = downsample
         self.stride = stride
 
+        if self.skippable == False:   # Switch BN for shared layers.  @woochul
+                self.bn1_skip = norm_layer(width)
+                self.bn2_skip = norm_layer(width)
+                self.bn3_skip = norm_layer(planes * self.expansion)
+
     def forward(self, x: Tensor, skip: bool = False) -> Tensor:
         identity = x
 
         out = self.conv1(x)
         if self.skippable == False and skip == True:  # Switchable BN. @woochul
-            # print(f"bn1_skip is used")
+            print(f"bn1_skip is used")
             out = self.bn1_skip(out)
         else:
-            # print(f"bn1 is used")
+            print(f"bn1 is used")
             out = self.bn1(out)
         out = self.relu(out)
 
         out = self.conv2(out)
         if self.skippable == False and skip == True:  # Switchable BN. @woochul
-            # print(f"bn2_skip is used")
+            print(f"bn2_skip is used")
             out = self.bn2_skip(out)
         else:
-            # print(f"bn2 is used")
+            print(f"bn2 is used")
             out = self.bn2(out)
         out = self.relu(out)
 
         out = self.conv3(out)
         if self.skippable == False and skip == True: # Switchable BN. @woochul
-            # print(f"bn3_skip is used")
+            print(f"bn3_skip is used")
             out = self.bn3_skip(out)
         else:
-            # print(f"bn3 is used")
+            print(f"bn3 is used")
             out = self.bn3(out)
 
         if self.downsample is not None:
@@ -318,6 +323,8 @@ class ResNet(nn.Module):
     def _forward_impl(self, x: Tensor, skip: List[bool] = None) -> Tensor:
         # See note [TorchScript super()]
         
+        print(f"(in resnet.py) skip : {skip}")
+        
         outs = []
         
         x = self.conv1(x)
@@ -344,6 +351,7 @@ class ResNet(nn.Module):
     def forward(self, x: Tensor, skip: List[bool] = None) -> Tensor:
         if skip is None:
             skip = [False for _ in range(self.num_skippable_stages)]
+        
         return self._forward_impl(x, skip = skip)
 
 
