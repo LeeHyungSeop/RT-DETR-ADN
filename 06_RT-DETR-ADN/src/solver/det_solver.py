@@ -62,9 +62,11 @@ class DetSolver(BaseSolver):
                 for checkpoint_path in checkpoint_paths:
                     dist.save_on_master(self.state_dict(epoch), checkpoint_path)
 
+            
             module = self.ema.module if self.ema else self.model
             test_stats, coco_evaluator = evaluate(
-                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir
+                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir, \
+                skip_config = self.base_config
             )
 
             # TODO 
@@ -116,11 +118,11 @@ class DetSolver(BaseSolver):
         if self.output_dir:
             dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval_base.pth")
             
-        test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
-                self.val_dataloader, base_ds, self.device, self.output_dir, 
-                skip_config = self.super_config)
-        if self.output_dir:
-            dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval_super.pth")
+        # test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
+        #         self.val_dataloader, base_ds, self.device, self.output_dir, 
+        #         skip_config = self.super_config)
+        # if self.output_dir:
+        #     dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval_super.pth")
         
                 
         
