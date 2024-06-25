@@ -233,7 +233,7 @@ class HybridEncoder(nn.Module):
                  dim_feedforward = 1024,
                  dropout=0.0,
                  enc_act='gelu',
-                 backbone='resnet',
+                 backbone=None,
                  use_encoder_idx=[2],
                  num_encoder_layers=1,
                  pe_temperature=10000,

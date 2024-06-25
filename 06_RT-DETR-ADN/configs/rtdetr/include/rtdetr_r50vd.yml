@@ -9,8 +9,8 @@ RTDETR:
   # 2024.06.02 @hslee
   # backbone: PResNet
   # backbone : ResNet
-  backbone : ResNetADN
-  # backbone : SwinTransformer
+  # backbone : ResNetADN
+  backbone : SwinTransformer
   encoder: HybridEncoder
   decoder: RTDETRTransformer
   multi_scale: [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
