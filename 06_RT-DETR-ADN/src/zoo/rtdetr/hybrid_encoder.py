@@ -233,7 +233,7 @@ class HybridEncoder(nn.Module):
                  dim_feedforward = 1024,
                  dropout=0.0,
                  enc_act='gelu',
-                 backbone=None,
+                 backbone='SwinTransformer',
                  use_encoder_idx=[2],
                  num_encoder_layers=1,
                  pe_temperature=10000,
@@ -249,16 +249,17 @@ class HybridEncoder(nn.Module):
         self.num_encoder_layers = num_encoder_layers
         self.pe_temperature = pe_temperature
         self.eval_spatial_size = eval_spatial_size
+        self.backbone = backbone
         
 
         self.out_channels = [hidden_dim for _ in range(len(in_channels))]
         self.out_strides = feat_strides
         
-        print(f"backbone : {backbone}")
+        print(f"self.backbone : {self.backbone}")
         
         
         # 2024.06.15 @hslee : make all the input channels to 256(hidden_dim) for SwinTransformer
-        if backbone == 'SwinTransformer':
+        if self.backbone == 'SwinTransformer':
             self.input_proj_swinT = nn.ModuleList()
             for in_channel in in_channels_swinT:   # in_channels_swinT=[192, 384, 768]
                 self.input_proj_swinT.append(

@@ -75,7 +75,7 @@ def create(type_or_name, **kwargs):
 
     name = type_or_name if isinstance(type_or_name, str) else type_or_name.__name__
 
-    print(f"create: {name}")
+    # print(f"create: {name}")
     if name in GLOBAL_CONFIG:
         if hasattr(GLOBAL_CONFIG[name], '__dict__'):
             return GLOBAL_CONFIG[name]
