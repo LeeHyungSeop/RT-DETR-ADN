@@ -684,25 +684,35 @@ class SwinTransformer(nn.Module):
         # self.head = nn.Linear(num_features, num_classes)
 
         if pretrained:
-            # path = "/home/hslee/Desktop/Embedded_AI/INU_4-1/RISE/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/checkpoint_swin-t-epoch297.pth"
-            path = "/home/hslee/Desktop/RetinaNet-ADN/02_AdaptiveDepthNetwork/pretrained/checkpoint_swin-t-epoch297.pth"
-            state = torch.load(path)['model']
             
+            url = "https://download.pytorch.org/models/swin_t-704ceda3.pth"
+            state = torch.hub.load_state_dict_from_url(url, progress=True)
+            
+            # new_state because of only the different key names
+            new_state = {}
+            for k, v in state.items():
+                new_key = k
+                
+                if 'features' in k:
+                    num = int(k.split('.')[1])
+                    if num == 0:
+                        new_key = k.replace(f'features.{num}', 'pre')
+                    else:
+                        new_key = k.replace(f'features.{num}', f'features.{num-1}')
+                
+                new_state[new_key] = v
+                # print(f"key: {new_key}, value: {v.shape}")
+                
             # 2024.06.16 @hslee
-            del state["head.weight"]
-            del state["head.bias"]
+            del new_state["head.weight"]
+            del new_state["head.bias"]
+            
+            # print all param
+            # for k, v in new_state.items():
+            #     print(f"key: {k}, value: {v.shape}")
                 
-            del state["features.6.1.norm1_skip.weight"]
-            del state["features.6.1.norm1_skip.bias"]
-            del state["features.6.1.norm2_skip.weight"]
-            del state["features.6.1.norm2_skip.bias"]
-                    
-            # print all parameter
-            for name, param in state.items():
-                print(f"name : {name}, param : {param.shape}")
-                
-            self.load_state_dict(state, strict=True)
-            print(f"Load state_dict from {path}")
+            self.load_state_dict(new_state, strict=False) # strict=False because of only the absence of bn_skip
+            print(f"Load state_dict from {url}")
         
         if freeze_at >= 0:
             self._freeze_parameters(self.conv1)
