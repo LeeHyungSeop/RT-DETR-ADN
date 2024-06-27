@@ -40,16 +40,23 @@ class YAMLConfig(BaseConfig):
 
     @property
     def model(self, ) -> torch.nn.Module:
-        # print("start creating model... (in yaml_config.py)")
+        print("start creating model... (in yaml_config.py)")
+        # print(f"self.yaml_cfg: {self.yaml_cfg}")
+        '''
+                   ...
+            'model' : 'RTDETR'
+            'RTDETR': {'backbone': 'PResNet', 'encoder': 'HybridEncoder', 'decoder': 'RTDETRTransformer', 'multi_scale': [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]}, 'PResNet': {'depth': 50, 'variant': 'd', 'freeze_at': 0, 'return_idx': [1, 2, 3], 'num_stages': 4, 'freeze_norm': True, 'pretrained': True}, 
+                   ...    
+        '''
         
-        print(f"self.yaml_cfg: {self.yaml_cfg}")
+        # print(f"[before creating self._model] self._model : {self._model}")
         
         if self._model is None and 'model' in self.yaml_cfg:
             merge_config(self.yaml_cfg)
             self._model = create(self.yaml_cfg['model'])
-            # self.yaml_cfg['model'] : 'RTDETR'
-            
-        # print("model created... (in yaml_config.py)")
+        
+        # print(f"[after creating self._model] self._model : {self._model}")
+        
         return self._model 
 
     @property

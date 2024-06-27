@@ -317,14 +317,14 @@ class TransformerDecoder(nn.Module):
             ref_points_input = ref_points_detach.unsqueeze(2)
             query_pos_embed = query_pos_head(ref_points_detach)
 
-            '''
             print(f"\t[decoder layer {i} input] : {output.shape} (object queries) ")         
+            '''
             '''
             output = layer(output, ref_points_input, memory,
                            memory_spatial_shapes, memory_level_start_index,
                            attn_mask, memory_mask, query_pos_embed)
-            '''
             print(f"\t[decoder layer {i} output] : {output.shape} (next decoder layer input)")
+            '''
             print("\n")
             '''
             

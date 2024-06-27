@@ -196,12 +196,21 @@ class PResNet(nn.Module):
         # 2024.05.15 @hslee
         # this part must be modified my resnet50_adn
         if pretrained:
-            # path = "/home/hslee/INU_RISE/02_AdaptiveDepthNetwork/pretrained/checkpoint_resnet50-epoch146.pth"
+            # path = "/home/hslee/Desktop/Embedded_AI/INU_4-1/RISE/02_AdaptiveDepthNetwork/pretrained/resnet50_adn_model_145.pth"
             state = torch.hub.load_state_dict_from_url(donwload_url[depth])
-            # state = torch.load(path)
-            self.load_state_dict(state)
-            print(f'Load PResNet{depth} state_dict')
-            # print(f"Load PResNet{depth} state_dict from {path}")
+            
+            # print first parameter
+            for name, param in state.items():
+                print(f"name : {name}, param : {param}")
+                
+            
+            self.load_state_dict(state, strict=True)
+            print(f"Load PResNet{depth} state_dict")
+            
+            # print first parameter
+            for name, param in self.named_parameters():
+                print(f"name : {name}, param : {param}")
+            
             
     def _freeze_parameters(self, m: nn.Module):
         for p in m.parameters():
@@ -217,7 +226,7 @@ class PResNet(nn.Module):
                     setattr(m, name, _child)
         return m
 
-    def forward(self, x):
+    def forward(self, x, skip=None):
         conv1 = self.conv1(x)
         x = F.max_pool2d(conv1, kernel_size=3, stride=2, padding=1)
         outs = []
@@ -225,6 +234,8 @@ class PResNet(nn.Module):
             x = stage(x)
             if idx in self.return_idx:
                 outs.append(x)
+        # for i in range(len(outs)):
+        #     print(f"\tout[{i}] : {outs[i].shape}")
         return outs
 
 

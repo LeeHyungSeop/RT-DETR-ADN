@@ -27,11 +27,45 @@ class BaseSolver(object):
 
         # 2024.05.15 @hslee 
         # model definition
+        self.super_config = [False, False, False, False]
+        self.base_config = [True, True, True, True]
+        
         model = cfg.model.to(device) # cfg.model = (YAMLConfig Class).(method) in yaml_config.py
         self.model = dist.warp_model(model, cfg.find_unused_parameters, cfg.sync_bn)
-        print(f"self.model: {self.model}")
+        print(f"self.model (in solver.py): \n{self.model}")
         
+        '''
+        (rt detr with original pretrained ResNet50) number of params: 42862860
+        (rt detr with my pretrained ResNet50ADN)    number of params: 42862860
+            -> setting 1 : (in resnetADN.py) norm_layer : FrozenBatchNorm2d
+            -> setting 2 : (in solver.py)    backbone.conv1.weight.requires_grad = False (9408)
+        '''
         
+        # 2024.06.04 @hslee 
+        # setting 2 : if pretrained ResNet50ADN, set backbone.conv1.weight to requires_grad=False
+        # because original pretrained model has backbone.conv1.weight requires_grad=False
+        if cfg.yaml_cfg['RTDETR']['backbone'] == 'PResNet' :
+            pass
+        elif cfg.yaml_cfg['RTDETR']['backbone'] == 'SwinTransformer' :
+            # pass
+            # set parameter named in 'pre' to requires_grad=False
+            for name, param in self.model.named_parameters():
+                if 'pre' in name:
+                    param.requires_grad = False
+        else :
+            # multi GPU
+            if dist.is_parallel(self.model):
+                self.model.module.backbone.conv1.weight.requires_grad = False
+            # single GPU
+            else :
+                self.model.backbone.conv1.weight.requires_grad = False
+        
+        # # print the all parameters in the model
+        # for name, param in self.model.named_parameters():
+        #     if param.requires_grad:
+        #         print(name)
+        #     else :
+        #         print(f"{name} (not requires_grad)")
         
         self.criterion = cfg.criterion.to(device)
         self.postprocessor = cfg.postprocessor

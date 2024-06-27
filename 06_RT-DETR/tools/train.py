@@ -27,20 +27,20 @@ def main(args, ) -> None:
     )
 
     # 2024.05.15 @hslee
-    '''
-    TASKS is Dictionary datatype
-        [key:'detection', value:DetSolver]
-    
-    cfg.yaml_cfg : the configuration file path (--config)
-        (default) configs/rtdetr/rtdetr_r50vd_6x_coco.yml
-    'task' : detection 
-        (by 'configs/rtdetr/rtdetr_r50vd_6x_coco.yml' > __include__ > './include/rtdetr_r50vd.yml' > 'task')
-    -> TASKS['detection'](cfg)
-    -> DetSolver(cfg)
-    
-    det_solver.py > class DetSolover(cfg)
-    '''
     solver = TASKS[cfg.yaml_cfg['task']](cfg)
+    '''
+        TASKS is Dictionary datatype
+            [key:'detection', value:DetSolver]
+        
+        cfg.yaml_cfg : the configuration file path (--config)
+            (default) configs/rtdetr/rtdetr_r50vd_6x_coco.yml
+        'task' : detection 
+            (by 'configs/rtdetr/rtdetr_r50vd_6x_coco.yml' > __include__ > './include/rtdetr_r50vd.yml' > 'task' : detection)
+        -> TASKS['detection'](cfg)
+        -> DetSolver(cfg)
+        
+        det_solver.py > class DetSolover(cfg)
+    '''
     
     
     if args.test_only:
@@ -64,11 +64,27 @@ if __name__ == '__main__':
 
 
 '''
+pip install -r requirements.txt
 
 # train on multi-gpu
 export CUDA_VISIBLE_DEVICES=0,1
 torchrun --nproc_per_node=2 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \
     2>&1 | tee ./logs/test.txt
+    
+export CUDA_VISIBLE_DEVICES=0,1
+torchrun --nproc_per_node=2 tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \
+    --resume "/home/hslee/Desktop/RT-DETR-ADN/06_RT-DETR-ADN/output/rtdetr_r50vd_6x_coco_ResNetv1/checkpoint.pth" \
+    2>&1 | tee -a ./logs/baseline_SwinT_super.txt
 
+# train
+export CUDA_VISIBLE_DEVICES=0
+python tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml \
+    2>&1 | tee ./logs/test.txt
+
+
+# test on single-gpu
+export CUDA_VISIBLE_DEVICES=0
+python tools/train.py -c configs/rtdetr/rtdetr_r50vd_6x_coco.yml --test-only --resume "/home/hslee/Desktop/Embedded_AI/INU_4-1/RISE/06_RT-DETR-ADN/output/rtdetr_r50vd_6x_coco/checkpoint0000.pth" \
+    2>&1 | tee ./logs/test.txt
 
 '''

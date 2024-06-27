@@ -226,12 +226,14 @@ class TransformerEncoder(nn.Module):
 class HybridEncoder(nn.Module):
     def __init__(self,
                  in_channels=[512, 1024, 2048],
+                 in_channels_swinT=[192, 384, 768],
                  feat_strides=[8, 16, 32],
                  hidden_dim=256,
                  nhead=8,
                  dim_feedforward = 1024,
                  dropout=0.0,
                  enc_act='gelu',
+                 backbone='SwinTransformer',
                  use_encoder_idx=[2],
                  num_encoder_layers=1,
                  pe_temperature=10000,
@@ -247,21 +249,36 @@ class HybridEncoder(nn.Module):
         self.num_encoder_layers = num_encoder_layers
         self.pe_temperature = pe_temperature
         self.eval_spatial_size = eval_spatial_size
+        self.backbone = backbone
         
 
         self.out_channels = [hidden_dim for _ in range(len(in_channels))]
         self.out_strides = feat_strides
         
-        # 2024.05.23 @hslee : make all the input channels to 256(hidden_dim)
-        # channel projection
-        self.input_proj = nn.ModuleList()
-        for in_channel in in_channels:   # in_channels=[512, 1024, 2048]
-            self.input_proj.append(
-                nn.Sequential(
-                    nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
-                    nn.BatchNorm2d(hidden_dim)
+        print(f"self.backbone : {self.backbone}")
+        
+        
+        # 2024.06.15 @hslee : make all the input channels to 256(hidden_dim) for SwinTransformer
+        if self.backbone == 'SwinTransformer':
+            self.input_proj_swinT = nn.ModuleList()
+            for in_channel in in_channels_swinT:   # in_channels_swinT=[192, 384, 768]
+                self.input_proj_swinT.append(
+                    nn.Sequential(
+                        nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
+                        nn.BatchNorm2d(hidden_dim)
+                    )
                 )
-            )
+        # 2024.05.23 @hslee : make all the input channels to 256(hidden_dim)
+        else :
+            # channel projection
+            self.input_proj = nn.ModuleList()
+            for in_channel in in_channels:   # in_channels=[512, 1024, 2048]
+                self.input_proj.append(
+                    nn.Sequential(
+                        nn.Conv2d(in_channel, hidden_dim, kernel_size=1, bias=False),
+                        nn.BatchNorm2d(hidden_dim)
+                    )
+                )
 
         # encoder transformer
         encoder_layer = TransformerEncoderLayer(
@@ -335,7 +352,13 @@ class HybridEncoder(nn.Module):
         assert len(feats) == len(self.in_channels)
         
         # 2024.05.23 @hslee : make all the input channels to 256(hidden_dim)
-        proj_feats = [self.input_proj[i](feat) for i, feat in enumerate(feats)]
+        
+        # for SwinTransformer
+        if feats[0].shape[1] == 192:
+            proj_feats = [self.input_proj_swinT[i](feat) for i, feat in enumerate(feats)]
+        # for ResNet variants
+        else :
+            proj_feats = [self.input_proj[i](feat) for i, feat in enumerate(feats)]
         ''' 
             (feat_high)
             proj_feats[2] S5 : torch.Size([b, 2048,  h,  w]) --> torch.Size([b, 256,  h,  w])

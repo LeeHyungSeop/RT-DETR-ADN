@@ -24,7 +24,14 @@ class DetSolver(BaseSolver):
 
         args = self.cfg 
         
-        n_parameters = sum(p.numel() for p in self.model.parameters() if p.requires_grad)
+        n_parameters = 0
+        
+        # 2024.06.04 @hslee
+        print(f"(in det_solver.py) model params, #params : ")
+        for name, param in self.model.named_parameters():
+            if param.requires_grad:
+                print(name, param.numel())
+                n_parameters += param.numel()
         print('number of params:', n_parameters)
 
         base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
@@ -32,14 +39,19 @@ class DetSolver(BaseSolver):
         best_stat = {'epoch': -1, }
 
         start_time = time.time()
+        
+        print(f"super_config : {self.super_config}")
+        print(f"base_config : {self.base_config}")
         for epoch in range(self.last_epoch + 1, args.epoches):
             if dist.is_dist_available_and_initialized():
                 self.train_dataloader.sampler.set_epoch(epoch)
             
+            # 2024.06.04 @hslee : super_config, base_config to train_one_epoch()
             train_stats = train_one_epoch(
                 self.model, self.criterion, self.train_dataloader, self.optimizer, self.device, epoch,
-                args.clip_max_norm, print_freq=args.log_step, ema=self.ema, scaler=self.scaler)
-
+                args.clip_max_norm, print_freq=args.log_step, ema=self.ema, scaler=self.scaler,
+                super_config=self.super_config, base_config=self.base_config)
+            
             self.lr_scheduler.step()
             
             if self.output_dir:
@@ -50,9 +62,11 @@ class DetSolver(BaseSolver):
                 for checkpoint_path in checkpoint_paths:
                     dist.save_on_master(self.state_dict(epoch), checkpoint_path)
 
+            
             module = self.ema.module if self.ema else self.model
             test_stats, coco_evaluator = evaluate(
-                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir
+                module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir, \
+                skip_config = self.super_config
             )
 
             # TODO 
@@ -97,10 +111,19 @@ class DetSolver(BaseSolver):
         base_ds = get_coco_api_from_dataset(self.val_dataloader.dataset)
         
         module = self.ema.module if self.ema else self.model
+        print(f"self.base_config : {self.base_config}")
         test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
-                self.val_dataloader, base_ds, self.device, self.output_dir)
-                
+                self.val_dataloader, base_ds, self.device, self.output_dir, 
+                skip_config = self.base_config)
         if self.output_dir:
-            dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval.pth")
+            dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval_base.pth")
+            
+        # test_stats, coco_evaluator = evaluate(module, self.criterion, self.postprocessor,
+        #         self.val_dataloader, base_ds, self.device, self.output_dir, 
+        #         skip_config = self.super_config)
+        # if self.output_dir:
+        #     dist.save_on_master(coco_evaluator.coco_eval["bbox"].eval, self.output_dir / "eval_super.pth")
+        
+                
         
         return

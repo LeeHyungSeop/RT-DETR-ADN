@@ -20,7 +20,7 @@ from src.misc import (MetricLogger, SmoothedValue, reduce_dict)
 
 def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
                     data_loader: Iterable, optimizer: torch.optim.Optimizer,
-                    device: torch.device, epoch: int, max_norm: float = 0, **kwargs):
+                    device: torch.device, epoch: int, max_norm: float = 0, **kwargs,):
     model.train()
     criterion.train()
     metric_logger = MetricLogger(delimiter="  ")
@@ -31,6 +31,8 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
     
     ema = kwargs.get('ema', None)
     scaler = kwargs.get('scaler', None)
+    super_config = kwargs.get('super_config', [False, False, False, False])
+    base_config = kwargs.get('base_config', [True, True, True, True])
 
     for samples, targets in metric_logger.log_every(data_loader, print_freq, header):
         samples = samples.to(device)
@@ -38,13 +40,19 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
         if scaler is not None:
             with torch.autocast(device_type=str(device), cache_enabled=True):
-                outputs = model(samples, targets)
+                print(f"\t(in det_engine.py) super_config : {super_config}")
+                outputs_super = model(samples, targets, skip=super_config)
+                # outputs_base  = model(samples, targets, skip=base_config)
             
             with torch.autocast(device_type=str(device), enabled=False):
-                loss_dict = criterion(outputs, targets)
+                loss_dict_super = criterion(outputs_super, targets)
+                # loss_dict_base  = criterion(outputs_base, targets)
 
-            loss = sum(loss_dict.values())
-            scaler.scale(loss).backward()
+            loss_super = sum(loss_dict_super.values())
+            scaler.scale(loss_super).backward()
+
+            # loss_base = sum(loss_dict_base.values())
+            # scaler.scale(loss_base).backward()
             
             if max_norm > 0:
                 scaler.unscale_(optimizer)
@@ -55,12 +63,25 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
             optimizer.zero_grad()
 
         else:
-            outputs = model(samples, targets)
-            loss_dict = criterion(outputs, targets)
+            # print(f"\t(in det_engine.py) super_config : {super_config}")
+            outputs_super = model(samples, targets, skip=super_config)
+            # outputs_super = model(samples, targets, skip=base_config)
+            loss_dict_super = criterion(outputs_super, targets)
+            # outputs_base = model(samples, targets)
+            # loss_dict_base = criterion(outputs_base, targets)
             
-            loss = sum(loss_dict.values())
+            loss_super = sum(loss_dict_super.values())
+            # loss_base = sum(loss_dict_base.values())
             optimizer.zero_grad()
-            loss.backward()
+            loss_super.backward()
+            # loss_base.backward()
+            
+            # print gradient shape
+            # for name, param in model.named_parameters():
+            #     if param.grad is not None:
+            #         print(f"name : {name}, param.grad.shape : {param.grad.shape}")
+            #     else :
+            #         print(f"name : {name}, param.grad : {param.grad}")
             
             if max_norm > 0:
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm)
@@ -71,15 +92,19 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
         if ema is not None:
             ema.update(model)
 
-        loss_dict_reduced = reduce_dict(loss_dict)
-        loss_value = sum(loss_dict_reduced.values())
+        loss_dict_reduced_super = reduce_dict(loss_dict_super)
+        loss_value = sum(loss_dict_reduced_super.values())
+        # loss_dict_reduced_base = reduce_dict(loss_dict_base)
+        # loss_value = sum(loss_dict_reduced_base.values())
 
         if not math.isfinite(loss_value):
             print("Loss is {}, stopping training".format(loss_value))
-            print(loss_dict_reduced)
+            print(loss_dict_reduced_super)
+            # print(loss_dict_reduced_base)
             sys.exit(1)
 
-        metric_logger.update(loss=loss_value, **loss_dict_reduced)
+        metric_logger.update(loss=loss_value, **loss_dict_reduced_super)
+        # metric_logger.update(loss=loss_value, **loss_dict_reduced_base)
         metric_logger.update(lr=optimizer.param_groups[0]["lr"])
 
     # gather the stats from all processes
@@ -90,7 +115,7 @@ def train_one_epoch(model: torch.nn.Module, criterion: torch.nn.Module,
 
 
 @torch.no_grad()
-def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessors, data_loader, base_ds, device, output_dir):
+def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessors, data_loader, base_ds, device, output_dir, skip_config=None):
     model.eval()
     criterion.eval()
 
@@ -110,7 +135,7 @@ def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessors,
     #         data_loader.dataset.ann_folder,
     #         output_dir=os.path.join(output_dir, "panoptic_eval"),
     #     )
-
+    print(f"skip_config : {skip_config}")
     for samples, targets in metric_logger.log_every(data_loader, 10, header):
         samples = samples.to(device)
         targets = [{k: v.to(device) for k, v in t.items()} for t in targets]
@@ -118,7 +143,7 @@ def evaluate(model: torch.nn.Module, criterion: torch.nn.Module, postprocessors,
         # with torch.autocast(device_type=str(device)):
         #     outputs = model(samples)
 
-        outputs = model(samples)
+        outputs = model(samples, skip=skip_config)
 
         # loss_dict = criterion(outputs, targets)
         # weight_dict = criterion.weight_dict

@@ -75,6 +75,7 @@ def create(type_or_name, **kwargs):
 
     name = type_or_name if isinstance(type_or_name, str) else type_or_name.__name__
 
+    # print(f"create: {name}")
     if name in GLOBAL_CONFIG:
         if hasattr(GLOBAL_CONFIG[name], '__dict__'):
             return GLOBAL_CONFIG[name]
@@ -82,7 +83,7 @@ def create(type_or_name, **kwargs):
         raise ValueError('The module {} is not registered'.format(name))
 
     cfg = GLOBAL_CONFIG[name]
-
+    
     if isinstance(cfg, dict) and 'type' in cfg:
         _cfg: dict = GLOBAL_CONFIG[cfg['type']]
         _cfg.update(cfg) # update global cls default args 
@@ -90,30 +91,29 @@ def create(type_or_name, **kwargs):
         name = _cfg.pop('type')
         
         return create(name)
-
-    print(f"cfg['_pymodule']: {cfg['_pymodule']}")
-    print(f"name: {name}")
     
     cls = getattr(cfg['_pymodule'], name)
-    
-    print(f"cls: {cls}")
+    # print(f"cls: {cls}")
+    # print(f"cfg['_pymodule']: {cfg['_pymodule']}")
+    # print(f"cls.__init__: {cls.__init__}")
     
     argspec = inspect.getfullargspec(cls.__init__)
     arg_names = [arg for arg in argspec.args if arg != 'self']
+    # print(f"arg_names: {arg_names}")
     
     cls_kwargs = {}
     cls_kwargs.update(cfg)
     
     # shared var
-    for k in cfg['_share']:
+    for k in cfg['_share']: # cfg['_share'] : []
         if k in GLOBAL_CONFIG:
             cls_kwargs[k] = GLOBAL_CONFIG[k]
         else:
             cls_kwargs[k] = cfg[k]
 
     # inject
-    for k in cfg['_inject']:
-        _k = cfg[k]
+    for k in cfg['_inject']: # cfg['_inject'] : ['backbone', 'encoder', 'decoder']
+        _k = cfg[k] # 'backbone', 'encoder', 'decoder'
 
         if _k is None:
             continue
@@ -125,6 +125,7 @@ def create(type_or_name, **kwargs):
             _cfg = GLOBAL_CONFIG[_k]
             
             if isinstance(_cfg, dict):
+                # print(f"_cfg: {_cfg}")
                 cls_kwargs[k] = create(_cfg['_name'])
             else:
                 cls_kwargs[k] = _cfg 
@@ -149,7 +150,7 @@ def create(type_or_name, **kwargs):
 
 
     cls_kwargs = {n: cls_kwargs[n] for n in arg_names}
-
+    
     return cls(**cls_kwargs)
 
 

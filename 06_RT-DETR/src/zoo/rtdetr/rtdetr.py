@@ -23,29 +23,29 @@ class RTDETR(nn.Module):
         self.backbone = backbone
         self.decoder = decoder
         self.encoder = encoder
-        self.multi_scale = multi_scale
-        # 2024.05.27 @hslee 
-        #/configs/rtdetr/include/rtdetr_r50vd.yml
-        # multi_scale = [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
+        self.multi_scale = multi_scale # [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
         
         
-    def forward(self, x, targets=None):
+    # [True, True, True, True]
+    def forward(self, x, targets=None, skip=None):
+        # print(f"[in RTDETR.forward] skip : {skip}")
         if self.multi_scale and self.training:
             sz = np.random.choice(self.multi_scale)
             # sz : random size from multi_scale [480, 512, 544, 576, 608, 640, 640, 640, 672, 704, 736, 768, 800]
             x = F.interpolate(x, size=[sz, sz])
         
         # 2024.05.23 @hslee    
+        # print(f"\traw image size : {x.shape}")
         '''
             x : input
                 torch.Size([bs, 3, sz, sz])
         '''
         
-        x = self.backbone(x)
+        x = self.backbone(x, skip=skip)
+        # print(f"\t(after RTDETR.backbone)")
+        # for i in range(len(x)):
+        #     print(f"\tx[{i}] : {x[i].shape}")
         '''
-        print(f"(after RTDETR.backbone)")
-        for i in range(len(x)):
-            print(f"\tx[{i}] : {x[i].shape}")
                 
             x[0] : torch.Size([4,  512, 4h, 4w])
             x[1] : torch.Size([4, 1024, 2h, 2w])
@@ -53,10 +53,10 @@ class RTDETR(nn.Module):
         '''           
             
         x = self.encoder(x)        
+        # print(f"\t(after RTDETR.encoder)")
+        # for i in range(len(x)):
+        #     print(f"\tx[{i}] : {x[i].shape}")
         '''
-        print(f"(after RTDETR.encoder)")
-        for i in range(len(x)):
-            print(f"\tx[{i}] : {x[i].shape}")
             x[0] : torch.Size([4, 256, 4h, 4w])
             x[1] : torch.Size([4, 256, 2h, 2w])
             x[2] : torch.Size([4, 256,  h,  w])
