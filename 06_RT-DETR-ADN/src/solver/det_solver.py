@@ -66,7 +66,7 @@ class DetSolver(BaseSolver):
             module = self.ema.module if self.ema else self.model
             test_stats, coco_evaluator = evaluate(
                 module, self.criterion, self.postprocessor, self.val_dataloader, base_ds, self.device, self.output_dir, \
-                skip_config = self.base_config
+                skip_config = self.super_config
             )
 
             # TODO 
